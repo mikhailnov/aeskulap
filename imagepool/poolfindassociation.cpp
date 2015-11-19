@@ -40,8 +40,8 @@ FindAssociation::~FindAssociation() {
 	DeleteResultStack();
 }
 
-CONDITION FindAssociation::findSCU(T_ASC_Association *assoc, DcmDataset *query) {
-	CONDITION cond;
+OFCondition FindAssociation::findSCU(T_ASC_Association *assoc, DcmDataset *query) {
+	OFCondition cond;
 	DIC_US msgId = assoc->nextMsgID++;
 	T_ASC_PresentationContextID presId;
 	T_DIMSE_C_FindRQ req;
@@ -72,7 +72,7 @@ CONDITION FindAssociation::findSCU(T_ASC_Association *assoc, DcmDataset *query) 
 			&rsp, &statusDetail);
 	
 	
-	if (cond == DIMSE_NORMAL)  {
+	if (cond == EC_Normal)  {
 			if (rsp.DimseStatus == STATUS_Success)  {
 			}
 	}
@@ -100,7 +100,7 @@ void FindAssociation::findCallback(void* callbackData, T_DIMSE_C_FindRQ*, int re
 	caller->OnResponseReceived(response);
 }
 
-CONDITION FindAssociation::SendObject(DcmDataset *dataset) {
+OFCondition FindAssociation::SendObject(DcmDataset *dataset) {
 	return findSCU(assoc, dataset);
 }
 

@@ -56,24 +56,24 @@ public:
 	/**
 	Connect the association to a dicom network
 	*/
-	CONDITION Connect(Network* network, int lossy = 0);
+	OFCondition Connect(Network* network, int lossy = 0);
 
 	void Destroy();
 	
 	/**
 	Drop the association
 	*/
-	CONDITION Drop(CONDITION cond=DIMSE_NORMAL);
+	OFCondition Drop(OFCondition cond=EC_Normal);
 
 	/**
 	Send a dataset through the association (C-Store)
 	*/
-	virtual CONDITION SendObject(DcmDataset* dataset);
+	virtual OFCondition SendObject(DcmDataset* dataset);
 
 	/**
 	Send a fileformat object through the association (C-Store)
 	*/
-	virtual CONDITION SendObject(DcmFileFormat* dcmff);
+	virtual OFCondition SendObject(DcmFileFormat* dcmff);
 
 	/**
 	Send a C-Echo request through the association
