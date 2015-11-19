@@ -359,6 +359,9 @@ void SeriesView::scroll_to(unsigned int pos, bool select) {
 		if(m_dispparam.size() > m_selected_image && m_dispparam[m_selected_image]) {
 			m_dispparam[m_selected_image]->selected = false;
 			m_selected_image += diff;
+			// keep it in range, otherwise we can get a crash
+			if (m_selected_image > get_max_scrollpos())
+				m_selected_image = get_max_scrollpos();
 			if(m_dispparam.size() > m_selected_image && m_dispparam[m_selected_image]) {
 				m_dispparam[m_selected_image]->selected = true;
 			}
