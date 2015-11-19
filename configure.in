@@ -30,7 +30,6 @@ AM_PROG_LIBTOOL
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
-
 if test x"$MINGW32" = xno ; then
 AM_BINRELOC
 else
@@ -95,31 +94,15 @@ fi
 fi
 
 
-dnl AC_CONFIG_SUBDIRS(dcmtk)
-
-if test x"$MINGW32" = xyes ; then
-
-DCMTK_CFLAGS="-DHAVE_CONFIG_H -I\$(prefix)/include"
-DCMTK_LIBS="-L\$(prefix)/lib -ldcmjpeg -lijg8 -lijg12 -lijg16 -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -lofstd -lwsock32"
-
-else
-
-DCMJPEG_LIBS="-L../dcmtk/dcmjpeg/libijg8 -L../dcmtk/dcmjpeg/libijg12 -L../dcmtk/dcmjpeg/libijg16 -lijg8 -lijg12 -lijg16"
-AC_SUBST(DCMJPEG_LIBS)
-
-DCMTK_CFLAGS="-DHAVE_CONFIG_H -I\$(top_srcdir)/dcmtk/config/include -I\$(top_srcdir)/dcmtk/ofstd/include -I\$(top_srcdir)/dcmtk/dcmdata/include -I\$(top_srcdir)/dcmtk/dcmnet/include -I\$(top_srcdir)/dcmtk/dcmimage/include -I\$(top_srcdir)/dcmtk/dcmimgle/include -I\$(top_srcdir)/dcmtk/dcmjpeg/include"
-DCMTK_LIBS="-L../dcmtk/ofstd/libsrc \
--L../dcmtk/dcmdata/libsrc \
--L../dcmtk/dcmnet/libsrc \
--L../dcmtk/dcmjpeg/libsrc \
--L../dcmtk/dcmimage/libsrc \
--L../dcmtk/dcmimgle/libsrc \
-\$(DCMJPEG_LIBS) -ldcmjpeg -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -lofstd -lrt -lpthread"
-
-fi
+dnl use system dcmtk
+dnl AC_CHECK_LIB(dcmimage)
+AC_CHECK_HEADER(dcmtk/config/osconfig.h)
 
 AC_SUBST(DCMTK_CFLAGS)
 AC_SUBST(DCMTK_LIBS)
+
+DCMTK_CFLAGS="-DHAVE_CONFIG_H -I\$(prefix)/include"
+DCMTK_LIBS="-L\$(prefix)/lib -ldcmjpeg -lijg8 -lijg12 -lijg16 -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -lofstd -lwrap"
 
 dnl set PREFIX
 if test "x${prefix}" = "xNONE"; then
@@ -128,16 +111,13 @@ else
     packageprefix=${prefix}
 fi
 
-DCMTK_SUBDIR=""
 if test x"$MINGW32" = xno ; then
-DCMTK_SUBDIR="dcmtk"
 LDFLAGS_AESKULAP_LIBS="-Wl,-rpath,${prefix}/lib/aeskulap -avoid-version"
 else
 LDFLAGS_MINGW32="-mwindows"
 LDFLAGS_AESKULAP_LIBS="-avoid-version -no-undefined"
 fi
 
-AC_SUBST(DCMTK_SUBDIR)
 AC_SUBST(LDFLAGS_MINGW32)
 AC_SUBST(LDFLAGS_AESKULAP_LIBS)
 
@@ -160,12 +140,3 @@ packaging/win32/Makefile
 packaging/win32/aeskulap.iss
 ])
 
-
-if test x"$MINGW32" = xno ; then
-
-cd $srcdir/dcmtk
-export CFLAGS="$CFLAGS"
-export CXXFLAGS="$CXXFLAGS"
-sh ./configure --without-openssl --without-zlib --without-libwrap --prefix=${prefix} --libdir=${prefix}/lib/aeskulap
-
-fi
