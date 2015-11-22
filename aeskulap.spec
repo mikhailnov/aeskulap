@@ -56,8 +56,8 @@ Documentation for aeskulap.
 
 %prep
 %setup -q -n %{github}-%{git}
+autoreconf --force --install
 intltoolize --force --copy --automake
-autoreconf -if
 
 %build
 # point to the correct lib version depending on the arch
