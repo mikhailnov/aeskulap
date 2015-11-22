@@ -59,9 +59,6 @@ Documentation for aeskulap.
 intltoolize --force --copy --automake
 autoreconf -if
 
-# remove bundled copy of dcmtk!
-rm -rvf dcmtk
-
 %build
 # point to the correct lib version depending on the arch
 sed -i 's/lib -ldcmjpeg/%{_lib} -ldcmjpeg/' configure configure.in
