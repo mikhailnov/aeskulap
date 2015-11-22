@@ -78,9 +78,6 @@ install -p -m 0644 %{SOURCE1} -t .
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
 
-# remove .la files.
-find %{buildroot} -name "*.la" -exec rm -fv '{}' \;
-
 %find_lang %{name}
 
 %pre
@@ -113,6 +110,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/appdata/%{name}.appdata.xml
 %{_sysconfdir}/gconf/schemas/%{name}.schemas
+%exclude %{_libdir}/%{name}/*.la
 %doc AUTHORS ABOUT-NLS ChangeLog README
 %license COPYING
 
