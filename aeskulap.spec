@@ -111,6 +111,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/64x64/apps/%{name}.png
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/appdata/%{name}.appdata.xml
 %{_sysconfdir}/gconf/schemas/%{name}.schemas
 %doc AUTHORS ABOUT-NLS ChangeLog README
 %license COPYING
