@@ -59,11 +59,6 @@ Documentation for aeskulap.
 intltoolize --force --copy --automake
 autoreconf -if
 
-# apply patches
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-
 # remove bundled copy of dcmtk!
 rm -rvf dcmtk
 
