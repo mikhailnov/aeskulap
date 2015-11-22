@@ -3,7 +3,7 @@
 <application>
   <id type="desktop">aeskulap.desktop</id>
   <metadata_license>CC0</metadata_license>
-  <project_license>GPLv2+</project_license>
+  <project_license>GPL-2.0++</project_license>
   <name>Aeskulap</name>
   <summary>Full open source replacement for commercially available DICOM viewers</summary>
   <description>

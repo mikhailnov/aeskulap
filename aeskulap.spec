@@ -1,4 +1,4 @@
-%global git 29caae2
+%global git e830186
 %global github jenslody-aeskulap
 %global checkout git%{git}
 %global checkout_date 20151122
@@ -120,11 +120,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc %{name}-tutorials.pdf
 
 %changelog
+
 * Sun Nov 22 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.23.beta1
 - Use own fork of github-repo.
 - Remove dcmtk-sources.
 - Include all patches in source.
 - Update autotools, to remove deprecated macros and reduce warnings.
+- Add appdata-file.
 
 * Fri Nov 20 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.22.beta1
 - Use github-repo,
