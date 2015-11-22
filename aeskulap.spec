@@ -61,7 +61,7 @@ intltoolize --force --copy --automake
 
 %build
 # point to the correct lib version depending on the arch
-sed -i 's/lib -ldcmjpeg/%{_lib} -ldcmjpeg/' configure configure.in
+sed -i 's/lib -ldcmjpeg/%{_lib} -ldcmjpeg/' configure configure.ac
 
 export CPPFLAGS='-std=c++11'
 %configure --disable-static --disable-schemas-install
