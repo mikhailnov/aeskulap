@@ -1,5 +1,5 @@
 %global git  ea0a119
-%global github Jenslody-aeskulap
+%global github jenslody-aeskulap
 %global checkout git%{git}
 %global checkout_date 20151108
 
