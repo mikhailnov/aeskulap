@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
+<application>
+  <id type="desktop">aeskulap.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>GPLv2+</project_license>
+  <name>Aeskulap</name>
+  <summary>Full open source replacement for commercially available DICOM viewers</summary>
+  <description>
+    <p>
+      Aeskulap is able to load a series of special images stored in the
+      DICOM format for review. Additionally Aeskulap is able to query
+      and fetch DICOM images from archive nodes (also called PACS) over
+      the network.
+    </p>
+    <p>
+      The goal of this project is to create a full open source replacement
+      for commercially available DICOM viewers.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">https://github.com/jenslody/aeskulap/raw/master/aeskulap-0.2.2-screenshot.png</screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/jenslody/aeskulap</url>
+  <updatecontact>fedora_at_jenslody.de</updatecontact>
+</application>

@@ -79,6 +79,9 @@ glade_DATA = aeskulap.glade
 desktopdir = $(datadir)/applications
 desktop_DATA = aeskulap.desktop
 
+appdatadir = $(datadir)/appdata
+appdata_DATA = aeskulap.appdata.xml
+
 EXTRA_DIST = \
 	aeskulap.glade \
 	aeskulap.desktop \

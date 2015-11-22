@@ -28,6 +28,7 @@ BuildRequires:   pkgconfig(gtkmm-2.4)
 BuildRequires:   pkgconfig(libglademm-2.4)
 BuildRequires:   pkgconfig(gthread-2.0)
 BuildRequires:   pkgconfig(gconfmm-2.6)
+BuildRequires:   libappstream-glib
 BuildRequires:   GConf2
 Requires(pre):   GConf2
 Requires(post):  GConf2
@@ -75,6 +76,7 @@ export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 install -p -m 0644 %{SOURCE1} -t .
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
 
 # remove .la files.
 find %{buildroot} -name "*.la" -exec rm -fv '{}' \;
