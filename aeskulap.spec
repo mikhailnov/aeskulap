@@ -1,11 +1,11 @@
-%global git  ea0a119
+%global git 29caae2
 %global github jenslody-aeskulap
 %global checkout git%{git}
-%global checkout_date 20151108
+%global checkout_date 20151122
 
 Name:           aeskulap
 Version:        0.2.2
-Release:        0.22.beta1%{?dist}
+Release:        0.23.beta1%{?dist}
 Summary:        Full open source replacement for commercially available DICOM viewers
 
 License:        LGPLv2+
@@ -116,6 +116,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc %{name}-tutorials.pdf
 
 %changelog
+* Sun Nov 22 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.23.beta1
+- Use own fork of github-repo.
+- Remove dcmtk-sources.
+- Include all patches in source.
+- Update autotools, to remove deprecated macros and reduce warnings.
+
 * Fri Nov 20 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.22.beta1
 - Use github-repo,
 - reduced amount of patches.
