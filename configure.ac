@@ -1,5 +1,6 @@
-AC_PREREQ(2.52)
-AC_INIT(README)
+AC_PREREQ([2.69])
+AC_INIT
+AC_CONFIG_SRCDIR([README])
 
 AESKULAP_VERSION="0.2.2-beta1"
 AC_SUBST(AESKULAP_VERSION)
@@ -25,8 +26,8 @@ esac
 dnl
 dnl Require programs
 dnl
-AC_PROG_INTLTOOL
-AM_PROG_LIBTOOL
+IT_PROG_INTLTOOL
+LT_INIT
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
@@ -123,7 +124,7 @@ AC_SUBST(LDFLAGS_AESKULAP_LIBS)
 
 AM_CONDITIONAL(BUILD_NOT_MINGW32, test x$MINGW32 = xno)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 po/Makefile.in
 Makefile
 configuration/Makefile
@@ -139,4 +140,5 @@ packaging/rpm/aeskulap.spec
 packaging/win32/Makefile
 packaging/win32/aeskulap.iss
 ])
+AC_OUTPUT
 
