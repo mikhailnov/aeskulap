@@ -26,7 +26,6 @@
     Status:           $State$
 */
 
-//#include "dcmtk/dcmdata/dcdebug.h"
 #include "poolfindassociation.h"
 
 
