@@ -1,16 +1,18 @@
 AC_PREREQ([2.69])
-AC_INIT
+
+m4_define([AESKULAP_VERSION], 0.2.2-beta1)
+
+AC_INIT(aeskulap, AESKULAP_VERSION)
+
 AC_CONFIG_SRCDIR([README])
 
-AESKULAP_VERSION="0.2.2-beta1"
-AC_SUBST(AESKULAP_VERSION)
-
-
-dnl AC_CANONICAL_TARGET
+AC_CANONICAL_TARGET
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(aeskulap, $AESKULAP_VERSION)
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE
 
 AC_SUBST(ACLOCAL_AMFLAGS, "$ACLOCAL_FLAGS")
 
@@ -103,7 +105,7 @@ AC_SUBST(DCMTK_CFLAGS)
 AC_SUBST(DCMTK_LIBS)
 
 DCMTK_CFLAGS="-DHAVE_CONFIG_H -I\$(prefix)/include"
-DCMTK_LIBS="-L\$(prefix)/lib -ldcmjpeg -lijg8 -lijg12 -lijg16 -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -lofstd -lwrap"
+DCMTK_LIBS="-L\$(prefix)/lib -ldcmjpeg -lijg8 -lijg12 -lijg16 -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -loflog -lofstd -lwrap"
 
 dnl set PREFIX
 if test "x${prefix}" = "xNONE"; then

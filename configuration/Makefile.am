@@ -18,7 +18,7 @@ libconfiguration_la_LIBADD = \
 libconfiguration_la_LDFLAGS = \
 	$(LDFLAGS_AESKULAP_LIBS)
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	$(GCONFMM_CFLAGS) \
 	$(GTKMM_CFLAGS)
 

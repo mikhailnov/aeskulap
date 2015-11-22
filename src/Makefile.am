@@ -62,7 +62,7 @@ install-data-local:
 endif
 endif
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-DAESKULAP_DATADIR=\""$(datadir)"\" \
 	-DLOCALEDIR=\""$(datadir)/locale"\" \
 	$(GTKMM_CFLAGS) \

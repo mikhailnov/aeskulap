@@ -45,7 +45,7 @@ libimagepool_la_LIBADD = \
 libimagepool_la_LDFLAGS = \
 	$(LDFLAGS_AESKULAP_LIBS)
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)/configuration \
 	$(DCMTK_CFLAGS) \
 	$(GTKMM_CFLAGS)

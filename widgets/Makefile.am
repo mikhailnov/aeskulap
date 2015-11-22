@@ -36,7 +36,7 @@ libgtkdicom_la_SOURCES = \
 #libgtkdicom_la_LIBADD = \
 #	$(GTKMM_LIBS)
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)/configuration \
 	-I$(top_srcdir)/imagepool \
 	-I$(top_srcdir)/src \
