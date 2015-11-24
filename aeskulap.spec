@@ -8,7 +8,7 @@ Version:        0.2.2
 Release:        0.23.beta1%{?dist}
 Summary:        Full open source replacement for commercially available DICOM viewers
 
-License:        LGPLv2+
+License:        GPLv2+ and LGPLv2+
 URL:            https://github.com/jenslody/aeskulap
 
 Source0:        https://github.com/jenslody/%{name}/tarball/master/%{github}-%{git}.tar.gz
