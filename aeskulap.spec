@@ -111,7 +111,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sysconfdir}/gconf/schemas/%{name}.schemas
 %exclude %{_libdir}/%{name}/*.la
 %doc AUTHORS ABOUT-NLS ChangeLog README
-%license COPYING
+%license COPYING COPYING.LIB
 
 %files doc
 %doc %{name}-tutorials.pdf
