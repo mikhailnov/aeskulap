@@ -50,7 +50,6 @@ were these packages are available.
 
 %package doc
 Summary: Documentation for aeskulap
-Requires:        %{name}%{?_isa} = %{version}-%{release}
 BuildArch:       noarch
 
 %description doc
