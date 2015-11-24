@@ -2,6 +2,9 @@
 %global github jenslody-aeskulap
 %global checkout git%{git}
 %global checkout_date 20151122
+%if 0%{?fedora} < 23
+%global _hardened_build 1
+%endif
 
 Name:           aeskulap
 Version:        0.2.2
