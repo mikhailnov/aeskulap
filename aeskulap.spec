@@ -1,14 +1,15 @@
-%global git e830186
+%global git e053698
 %global github jenslody-aeskulap
 %global checkout git%{git}
-%global checkout_date 20151122
+%global checkout_date 20151124
+
 %if 0%{?fedora} < 23
 %global _hardened_build 1
 %endif
 
 Name:           aeskulap
 Version:        0.2.2
-Release:        0.23.beta1%{?dist}
+Release:        0.24.beta1%{?dist}
 Summary:        Full open source replacement for commercially available DICOM viewers
 
 License:        GPLv2+ and LGPLv2+
@@ -120,6 +121,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc %{name}-tutorials.pdf
 
 %changelog
+* Tue Nov 24 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.24.beta1
+- Fix dependency for doc- and debuginfo-package.
+- Fix license strings in spec-file and appdata.
+- Enable hardened build for F22
+- Added COPYING.LIB.
 
 * Sun Nov 22 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.23.beta1
 - Use own fork of github-repo.
