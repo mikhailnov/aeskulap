@@ -19,13 +19,6 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
     Alexander Pipelka
-    pipelka@teleweb.at
-
-    Last Update:      $Author: braindead $
-    Update Date:      $Date: 2007/05/10 14:29:59 $
-    Source File:      $Source: /cvsroot/aeskulap/aeskulap/src/mainwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.33 $
-    Status:           $State: Exp $
 */
 
 #include "mainwindow.h"

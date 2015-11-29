@@ -16,16 +16,9 @@
 
     You should have received a copy of the GNU General Public License
     along with Aeskulap; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
     Alexander Pipelka
-    pipelka@teleweb.at
-
-    Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/03/17 12:24:41 $
-    Source File:      $Source: /cvsroot/aeskulap/aeskulap/src/aiconfactory.cpp,v $
-    CVS/RCS Revision: $Revision: 1.13 $
-    Status:           $State: Exp $
 */
 
 #include "aiconfactory.h"
