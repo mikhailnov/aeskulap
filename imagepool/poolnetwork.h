@@ -17,13 +17,6 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
     Alexander Pipelka
-    pipelka@teleweb.at
-
-    Last Update:      $Author$
-    Update Date:      $Date$
-    Source File:      $Source$
-    CVS/RCS Revision: $Revision$
-    Status:           $State$
 */
 
 #ifndef IMAGEPOOL_NETWORK_H
