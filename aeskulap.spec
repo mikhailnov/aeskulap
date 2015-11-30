@@ -11,12 +11,12 @@ Name:           aeskulap
 Version:        0.2.2
 Release:        0.24.beta1%{?dist}
 Summary:        Full open source replacement for commercially available DICOM viewers
-
-License:        GPLv2+ and LGPLv2+
+# The sources of the (internal) libraries are LGPLv2+, the rest of the sources are GPLv2+,
+# except binreloc.{c,h} and the documentation, which are in the public domain
+License:        GPLv2+ and LGPLv2+ and Public Domain
 URL:            https://github.com/jenslody/aeskulap
 
 Source0:        https://github.com/jenslody/%{name}/tarball/master/%{github}-%{git}.tar.gz
-Source1:        %{name}-tutorials.pdf
 
 BuildRequires:   dcmtk-devel
 BuildRequires:   intltool
@@ -76,8 +76,6 @@ make %{?_smp_mflags}
 export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 %make_install
 
-install -p -m 0644 %{SOURCE1} -t .
-
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
 
@@ -118,7 +116,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %license COPYING COPYING.LIB
 
 %files doc
-%doc %{name}-tutorials.pdf
+%doc doc/%{name}-tutorials.pdf
+%license COPYING.DOC
 
 %changelog
 * Tue Nov 24 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.24.beta1
