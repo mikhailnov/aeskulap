@@ -23,7 +23,10 @@
 
 #include "aboutdialog.h"
 #include "aiconfactory.h"
+
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif // HAVE_CONFIG_H
 
 AboutDialog::AboutDialog(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) :
 Gtk::AboutDialog(cobject),
