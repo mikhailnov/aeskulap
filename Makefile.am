@@ -6,7 +6,6 @@ SUBDIRS = \
 	imagepool \
 	widgets \
 	src \
-	packaging \
 	pixmaps
 
 DIST_SUBDIRS = \
