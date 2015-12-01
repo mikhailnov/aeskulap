@@ -1,7 +1,7 @@
-%global git e053698
+%global git e467dfd
 %global github jenslody-aeskulap
 %global checkout git%{git}
-%global checkout_date 20151124
+%global checkout_date 20151201
 
 %if 0%{?fedora} < 23
 %global _hardened_build 1
@@ -9,7 +9,7 @@
 
 Name:           aeskulap
 Version:        0.2.2
-Release:        0.24.beta1%{?dist}
+Release:        0.25.beta1%{?dist}
 Summary:        Full open source replacement for commercially available DICOM viewers
 # The sources of the (internal) libraries are LGPLv2+, the rest of the sources are GPLv2+,
 # except binreloc.{c,h} and the documentation, which are in the public domain
@@ -120,6 +120,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %license COPYING.DOC
 
 %changelog
+* Tue Dec 01 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.25.beta1
+- Add license file, to doc-package.
+
 * Tue Nov 24 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.24.beta1
 - Fix dependency for doc- and debuginfo-package.
 - Fix license strings in spec-file and appdata.
