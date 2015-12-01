@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="configuration (linux)" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Debug/configuration" prefix_auto="1" extension_auto="1" />
+				<Option working_dir=".." />
+				<Option object_output="../obj/Debug" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Release/configuration" prefix_auto="1" extension_auto="1" />
+				<Option working_dir=".." />
+				<Option object_output="../obj/Release" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++11" />
+			<Add option="-fexceptions" />
+			<Add option="-fPIC" />
+			<Add option="`pkg-config glibmm-2.4 --cflags`" />
+			<Add option="`pkg-config gconfmm-2.6 --cflags`" />
+			<Add option='-DAESKULAP_DATADIR=\&quot;bin\&quot;' />
+			<Add directory="../../aeskulap" />
+		</Compiler>
+		<Linker>
+			<Add option="`pkg-config gconfmm-2.6 --libs`" />
+		</Linker>
+		<Unit filename="Makefile.am" />
+		<Unit filename="aconfigclient.cpp" />
+		<Unit filename="aconfigclient.h" />
+		<Unit filename="aconfiguration-gconf.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="aconfiguration-win32.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="aconfiguration.cpp" />
+		<Unit filename="aconfiguration.h" />
+		<Unit filename="awindowlevel.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

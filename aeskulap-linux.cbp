@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="aeskulap (linux)" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/aeskulap" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option external_deps="../bin/Debug/libimagepool.so;" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add directory="bin/Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/aeskulap" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option external_deps="bin/Release/libimagepool.so;" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="bin/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++11" />
+			<Add option="-fexceptions" />
+			<Add option="`pkg-config gtkmm-2.4 --cflags`" />
+			<Add option="`pkg-config libglademm-2.4 --cflags`" />
+			<Add option='-DAESKULAP_DATADIR=\\&quot;bin\\&quot;' />
+			<Add option='-DVERSION=\\&quot;0.2.2-beta1\\&quot;' />
+			<Add option='-DGETTEXT_PACKAGE=\\&quot;aeskulap\\&quot;' />
+			<Add directory="configuration" />
+			<Add directory="imagepool" />
+			<Add directory="widgets" />
+			<Add directory="src" />
+			<Add directory="../aeskulap" />
+		</Compiler>
+		<Linker>
+			<Add option="`pkg-config libglademm-2.4 --libs`" />
+			<Add library="imagepool" />
+			<Add library="configuration" />
+			<Add library="dcmjpeg" />
+			<Add library="ijg8" />
+			<Add library="ijg12" />
+			<Add library="ijg16" />
+			<Add library="dcmimage" />
+			<Add library="dcmimgle" />
+			<Add library="dcmnet" />
+			<Add library="dcmdata" />
+			<Add library="oflog" />
+			<Add library="ofstd" />
+			<Add library="wrap" />
+		</Linker>
+		<ExtraCommands>
+			<Add after="mkdir -p bin/aeskulap/glade/" />
+			<Add after="mkdir -p bin/aeskulap/locale/" />
+			<Add after="mkdir -p bin/aeskulap/images/" />
+			<Add after="cp src/*.glade bin/aeskulap/glade/" />
+			<Add after="cp pixmaps/* bin/aeskulap/images/" />
+			<Mode after="always" />
+		</ExtraCommands>
+		<Unit filename="ABOUT-NLS" />
+		<Unit filename="AUTHORS" />
+		<Unit filename="COPYING" />
+		<Unit filename="COPYING.DOC" />
+		<Unit filename="COPYING.LIB" />
+		<Unit filename="ChangeLog" />
+		<Unit filename="INSTALL" />
+		<Unit filename="Makefile.am" />
+		<Unit filename="NEWS" />
+		<Unit filename="README" />
+		<Unit filename="README.mingw32" />
+		<Unit filename="acinclude.m4" />
+		<Unit filename="aeskulap-0.2.2-screenshot.png" />
+		<Unit filename="aeskulap.spec" />
+		<Unit filename="autogen.sh" />
+		<Unit filename="configure.ac" />
+		<Unit filename="configure.mingw32" />
+		<Unit filename="gettext.h" />
+		<Unit filename="ltmain.sh" />
+		<Unit filename="pixmaps/Makefile.am" />
+		<Unit filename="pixmaps/README" />
+		<Unit filename="pixmaps/aeskulap.png" />
+		<Unit filename="pixmaps/aeskulap.svg" />
+		<Unit filename="pixmaps/cursor_pan.png" />
+		<Unit filename="pixmaps/cursor_windowlevel.png" />
+		<Unit filename="pixmaps/cursor_zoom.png" />
+		<Unit filename="pixmaps/filmholes-big-left.png" />
+		<Unit filename="pixmaps/filmholes-big-right.png" />
+		<Unit filename="pixmaps/grid-1.png" />
+		<Unit filename="pixmaps/grid-16.png" />
+		<Unit filename="pixmaps/grid-2h.png" />
+		<Unit filename="pixmaps/grid-2v.png" />
+		<Unit filename="pixmaps/grid-4.png" />
+		<Unit filename="pixmaps/series-1x1.png" />
+		<Unit filename="pixmaps/series-2x1.png" />
+		<Unit filename="pixmaps/series-2x2.png" />
+		<Unit filename="pixmaps/series-3x2.png" />
+		<Unit filename="pixmaps/series-3x3.png" />
+		<Unit filename="pixmaps/series-4x4.png" />
+		<Unit filename="pixmaps/start-here.png" />
+		<Unit filename="pixmaps/stock-layers-24.png" />
+		<Unit filename="pixmaps/stock-tool-color-picker-22.png" />
+		<Unit filename="pixmaps/stock-tool-eraser-22.png" />
+		<Unit filename="pixmaps/stock-tool-measure-22.png" />
+		<Unit filename="pixmaps/stock-tool-pencil-22.png" />
+		<Unit filename="pixmaps/stock-tool-scale-22.png" />
+		<Unit filename="po/ChangeLog" />
+		<Unit filename="po/LINGUAS" />
+		<Unit filename="po/Makevars" />
+		<Unit filename="po/POTFILES.in" />
+		<Unit filename="po/de.po" />
+		<Unit filename="po/en.po" />
+		<Unit filename="po/es.po" />
+		<Unit filename="po/hu.po" />
+		<Unit filename="po/pt.po" />
+		<Unit filename="src/Makefile.am" />
+		<Unit filename="src/aboutdialog.cpp" />
+		<Unit filename="src/aboutdialog.h" />
+		<Unit filename="src/abusycursor.cpp" />
+		<Unit filename="src/abusycursor.h" />
+		<Unit filename="src/aeskulap.appdata.xml" />
+		<Unit filename="src/aeskulap.desktop" />
+		<Unit filename="src/aeskulap.glade" />
+		<Unit filename="src/aeskulap.gladep" />
+		<Unit filename="src/aeskulap.schemas" />
+		<Unit filename="src/aiconfactory.cpp" />
+		<Unit filename="src/aiconfactory.h" />
+		<Unit filename="src/astockids.cpp" />
+		<Unit filename="src/astockids.h" />
+		<Unit filename="src/binreloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/binreloc.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/mainwindow.cpp" />
+		<Unit filename="src/mainwindow.h" />
+		<Unit filename="src/prescandialog.cpp" />
+		<Unit filename="src/prescandialog.h" />
+		<Unit filename="src/settings.cpp" />
+		<Unit filename="src/settings.h" />
+		<Unit filename="src/studymanager.cpp" />
+		<Unit filename="src/studymanager.h" />
+		<Unit filename="src/windowleveldialog.cpp" />
+		<Unit filename="src/windowleveldialog.h" />
+		<Unit filename="update_revision.sh" />
+		<Unit filename="widgets/Makefile.am" />
+		<Unit filename="widgets/adatefilter.cpp" />
+		<Unit filename="widgets/adatefilter.h" />
+		<Unit filename="widgets/adisplay.cpp" />
+		<Unit filename="widgets/adisplay.h" />
+		<Unit filename="widgets/afloatwidget.cpp" />
+		<Unit filename="widgets/afloatwidget.h" />
+		<Unit filename="widgets/aframectrl.h" />
+		<Unit filename="widgets/amultiframectrl.cpp" />
+		<Unit filename="widgets/amultiframectrl.h" />
+		<Unit filename="widgets/aseriesmenu.cpp" />
+		<Unit filename="widgets/aseriesmenu.h" />
+		<Unit filename="widgets/asimpledisplay.cpp" />
+		<Unit filename="widgets/asimpledisplay.h" />
+		<Unit filename="widgets/astudytab.cpp" />
+		<Unit filename="widgets/astudytab.h" />
+		<Unit filename="widgets/atiler.cpp" />
+		<Unit filename="widgets/atiler.h" />
+		<Unit filename="widgets/avaluetool.cpp" />
+		<Unit filename="widgets/avaluetool.h" />
+		<Unit filename="widgets/awindowleveltoolbutton.cpp" />
+		<Unit filename="widgets/awindowleveltoolbutton.h" />
+		<Unit filename="widgets/displayparameters.cpp" />
+		<Unit filename="widgets/displayparameters.h" />
+		<Unit filename="widgets/imagelayouttoolbutton.cpp" />
+		<Unit filename="widgets/imagelayouttoolbutton.h" />
+		<Unit filename="widgets/serieslayouttoolbutton.cpp" />
+		<Unit filename="widgets/serieslayouttoolbutton.h" />
+		<Unit filename="widgets/seriesview.cpp" />
+		<Unit filename="widgets/seriesview.h" />
+		<Unit filename="widgets/studyview.cpp" />
+		<Unit filename="widgets/studyview.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
