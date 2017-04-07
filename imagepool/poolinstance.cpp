@@ -93,19 +93,10 @@ double Instance::pixel_value(int x, int y, int frame) {
 	int pitch = width() * samplesize;
 	
 	guint8* p = static_cast<guint8*>(pixels(frame)) + pitch*y + samplesize * x;
-	guint16* p16 = 0;
 
-	switch(samplesize) {
-		case 1:
-			result = (double)(*p);
-			break;
-		case 2:
-			p16 = (guint16*)p;
-			result = (double)(*p16);
-			break;
-		case 3:
-			result = (double)(*p + (*++p) << 8 + (*++p) << 16);
-			break;
+	assert(1 <= samplesize && samplesize <= 3);
+	for (int sample = 0; sample < samplesize; sample++) {
+		result += (double)(*p++ << (8 * sample));
 	}
 	
 	if(slope() != 0) {
