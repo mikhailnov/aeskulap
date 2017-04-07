@@ -130,7 +130,7 @@ Glib::RefPtr< ImagePool::Series > create_query_series(DcmDataset* dset) {
 }
 
 static void on_query_from_net_result(DcmStack* resultstack, const std::string& server, const sigc::slot< void, const Glib::RefPtr< ImagePool::Study > >& resultslot) {
-	for(unsigned int i=0; i<resultstack->card(); i++) {
+	for(unsigned long i=0; i<resultstack->card(); i++) {
 		DcmDataset* dset = (DcmDataset*)resultstack->elem(i);
 		resultslot(create_query_study(dset, server));
 	}
@@ -323,7 +323,7 @@ void query_series_from_net(const std::string& studyinstanceuid, const std::strin
 	a.QueryServer(&query, server, local_aet, UID_FINDStudyRootQueryRetrieveInformationModel);
 
 	DcmStack* result = a.GetResultStack();
-	for(unsigned int i=0; i<result->card(); i++) {
+	for(unsigned long i=0; i<result->card(); i++) {
 		DcmDataset* dset = (DcmDataset*)result->elem(i);
 		dset->print(COUT);
 		resultslot(create_query_series(dset));
@@ -421,7 +421,7 @@ int query_study_series(const std::string& studyinstanceuid, const std::string& s
 	OFString ofstr;
 
 	seriesinstanceuids.clear();
-	for(int i = 0; i < result->card(); i++) {
+	for(unsigned long i = 0; i < result->card(); i++) {
 		dset = (DcmDataset*)result->elem(i);
 		if(dset->findAndGetOFString(DCM_SeriesInstanceUID, ofstr).good()) {
 			seriesinstanceuids.push_back(ofstr.c_str());
