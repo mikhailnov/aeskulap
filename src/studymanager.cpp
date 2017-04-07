@@ -235,7 +235,7 @@ void StudyManager::on_queryresult_study(const Glib::RefPtr< ImagePool::Study >& 
 	m_result_list[study->studyinstanceuid()] = study;
 
 	// add child
-	Gtk::TreeModel::Row child = *(m_refTreeModelStudy->append(row.children()));
+	m_refTreeModelStudy->append(row.children());
 
 	Aeskulap::set_busy_cursor(false);
 }

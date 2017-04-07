@@ -197,7 +197,6 @@ namespace ImagePool {
         DcmDicomDir dir(dicomdir.c_str());
         DcmDirectoryRecord *patRec;
         DcmDirectoryRecord *studyRec;
-        DcmDirectoryRecord *seriesRec;
         OFCondition ret;
 
         if ( dir.error() != EC_Normal ) {
