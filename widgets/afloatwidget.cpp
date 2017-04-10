@@ -43,8 +43,8 @@ void FloatWidget::on_realize() {
 }
 
 bool FloatWidget::on_timeout(int timer) {
-	int x, x1;
-	int y, y1;
+	int x;
+	int y;
 	
 	m_parent->get_pointer(x, y);
 	if(x < 0 || y < 0) {
@@ -60,11 +60,6 @@ bool FloatWidget::on_timeout(int timer) {
 	}
 		
 	m_parent->get_pointer(x, y);
-	//get_position(x, y);
-	/*get_pointer(x1, y1);
-
-	x += x1;
-	y += y1;*/
 
 	x += 16;
 	y += 16;

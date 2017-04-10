@@ -407,11 +407,8 @@ void SimpleDisplay::linestretch_24to24(int x1, int x2, int y1, int y2, int yr, i
 
 void SimpleDisplay::rectstretch_24to24(guint8* src, int xs1, int ys1, int xs2, int ys2, const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int xd1, int yd1, int xd2, int yd2) {
 	int dx, dy, e, d, dx2;
-	int sx, sy;
 	dx = abs((int)(yd2 - yd1));
 	dy = abs((int)(ys2 - ys1));
-	sx = sign(yd2 - yd1);
-	sy = sign(ys2 - ys1);
 	e = (dy << 1)-dx;
 	dx2 = dx << 1;
 	dy <<= 1;
@@ -476,11 +473,8 @@ void SimpleDisplay::linestretch_24(int x1, int x2, int y1, int y2, int yr, int y
 template < class ST >
 void SimpleDisplay::rectstretch_24(ST src, int xs1, int ys1, int xs2, int ys2, const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int xd1, int yd1, int xd2, int yd2) {
 	int dx, dy, e, d, dx2;
-	int sx, sy;
 	dx = abs((int)(yd2 - yd1));
 	dy = abs((int)(ys2 - ys1));
-	sx = sign(yd2 - yd1);
-	sy = sign(ys2 - ys1);
 	e = (dy << 1)-dx;
 	dx2 = dx << 1;
 	dy <<= 1;

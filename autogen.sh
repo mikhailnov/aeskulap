@@ -47,10 +47,6 @@ fi
 
 echo "Preparing dcmtk ..."
 
-cd dcmtk/config
-sh ./autoall
-sh ./rootconf
-
 cd $TOPDIR
 
 
@@ -108,9 +104,6 @@ intltoolize -c -f --automake || {
     echo "***ERROR* intltoolize failed."
     exit 1
 }
-
-chmod +x `find . -name configure`
-chmod +x `find . -name mkinstalldirs`
 
 echo
 echo "Please run ./configure now."

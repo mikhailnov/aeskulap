@@ -693,7 +693,7 @@ void StudyView::on_signal_motion(GdkEventMotion* event, Aeskulap::Display* d, Se
 
 	// handle 3D cursor
 
-	if(m_btn_3dcursor->get_active() && d != NULL & d->get_selected()) {
+	if(m_btn_3dcursor->get_active() && (d != NULL) & d->get_selected()) {
 		ImagePool::Instance::Point p;
 		if(!d->screen_to_point(x, y, p)) {
 			return;
