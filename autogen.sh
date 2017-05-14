@@ -1,109 +1,281 @@
-#!/bin/bash
+#!/bin/sh
+# Run this to generate all the initial makefiles, etc.
 
-AUTOCONF_REQUIRED_VERSION=2.52
-AUTOMAKE_REQUIRED_VERSION=1.8
+# default version requirements ...
+test "$REQUIRED_AUTOMAKE_VERSION" || REQUIRED_AUTOMAKE_VERSION=1.8
+test "$REQUIRED_AUTORECONF_VERSION" || REQUIRED_AUTORECONF_VERSION=2.52
+test "$REQUIRED_GLIB_GETTEXT_VERSION" || REQUIRED_GLIB_GETTEXT_VERSION=2.2.0
+test "$REQUIRED_INTLTOOL_VERSION" || REQUIRED_INTLTOOL_VERSION=0.25
+test "$REQUIRED_PKG_CONFIG_VERSION" || REQUIRED_PKG_CONFIG_VERSION=0.14.0
 
-cd `dirname $0`
-TOPDIR=`pwd`
+# a list of required m4 macros.  Package can set an initial value
+test "$REQUIRED_M4MACROS" || REQUIRED_M4MACROS=
 
-# check for proper versions
+topdir=`pwd`
+srcdir=`dirname $0`
 
-check_version ()
-{
-    if expr $1 \>= $2 > /dev/null; then
-        echo "yes (version $1)"
-    else
-        echo "Too old (found version $1)!"
-        DIE=1
+# Not all echo versions allow -n, so we check what is possible. This test is
+# based on the one in autoconf.
+ECHO_C=
+ECHO_N=
+case `echo -n x` in
+-n*)
+  case `echo 'x\c'` in
+  *c*) ;;
+  *)   ECHO_C='\c';;
+  esac;;
+*)
+  ECHO_N='-n';;
+esac
+
+# some terminal codes ...
+if tty 1>/dev/null 2>&1; then
+    boldface="`tput bold 2>/dev/null`"
+    normal="`tput sgr0 2>/dev/null`"
+else
+    boldface=
+    normal=
+fi
+printbold() {
+    echo $ECHO_N "$boldface" $ECHO_C
+    echo "$@"
+    echo $ECHO_N "$normal" $ECHO_C
+}    
+printerr() {
+    echo "$@" >&2
+}
+
+if [ -z "$srcdir" ]; then
+    printerr "***Warning*** \$srcdir is not defined, out of dir autogen is broken!"
+    srcdir=.
+fi
+
+PKG_NAME=`autoconf --trace='AC_INIT:$1' "$srcdir/configure.ac"`
+
+# Usage:
+#     compare_versions MIN_VERSION ACTUAL_VERSION
+# returns true if ACTUAL_VERSION >= MIN_VERSION
+compare_versions() {
+    ch_min_version=$1
+    ch_actual_version=$2
+    ch_status=0
+    IFS="${IFS=	 }"; ch_save_IFS="$IFS"; IFS="."
+    set $ch_actual_version
+    for ch_min in $ch_min_version; do
+        ch_cur=`echo $1 | sed 's/[^0-9].*$//'`; shift # remove letter suffixes
+        if [ -z "$ch_min" ]; then break; fi
+        if [ -z "$ch_cur" ]; then ch_status=1; break; fi
+        if [ $ch_cur -gt $ch_min ]; then break; fi
+        if [ $ch_cur -lt $ch_min ]; then ch_status=1; break; fi
+    done
+    IFS="$ch_save_IFS"
+    return $ch_status
+}
+
+# Usage:
+#     version_check PACKAGE VARIABLE CHECKPROGS MIN_VERSION SOURCE
+# checks to see if the package is available
+version_check() {
+    vc_package=$1
+    vc_variable=$2
+    vc_checkprogs=$3
+    vc_min_version=$4
+    vc_source=$5
+    vc_status=1
+    local ${vc_variable}_VERSION
+
+    vc_checkprog=`eval echo "\\$$vc_variable"`
+    if [ -n "$vc_checkprog" ]; then
+	printbold "using $vc_checkprog for $vc_package"
+	return 0
+    fi
+
+    printbold "checking for $vc_package >= $vc_min_version..."
+    for vc_checkprog in $vc_checkprogs; do
+	echo $ECHO_N "  testing $vc_checkprog... " $ECHO_C
+	if $vc_checkprog --version < /dev/null > /dev/null 2>&1; then
+	    vc_actual_version=`$vc_checkprog --version | head -n 1 | \
+                               sed 's/^.*[ 	]\([0-9.]*[a-z]*\).*$/\1/'`
+	    if compare_versions $vc_min_version $vc_actual_version; then
+		echo "found $vc_actual_version"
+		# set variables
+		eval "$vc_variable=$vc_checkprog; \
+			${vc_variable}_VERSION=$vc_actual_version"
+		vc_status=0
+		break
+	    else
+		echo "too old (found version $vc_actual_version)"
+	    fi
+	else
+	    echo "not found."
+	fi
+    done
+    if [ "$vc_status" != 0 ]; then
+	printerr "***Error***: You must have $vc_package >= $vc_min_version installed"
+	printerr "  to build $PKG_NAME.  Download the appropriate package for"
+	printerr "  from your distribution or get the source tarball at"
+        printerr "    $vc_source"
+	printerr
+	exit $vc_status
+    fi
+    return $vc_status
+}
+
+# Usage:
+#     require_m4macro filename.m4
+# adds filename.m4 to the list of required macros
+require_m4macro() {
+    case "$REQUIRED_M4MACROS" in
+	$1\ * | *\ $1\ * | *\ $1) ;;
+	*) REQUIRED_M4MACROS="$REQUIRED_M4MACROS $1" ;;
+    esac
+}
+
+# Usage:
+#     add_to_cm_macrodirs dirname
+# Adds the dir to $cm_macrodirs, if it's not there yet.
+add_to_cm_macrodirs() {
+    case $cm_macrodirs in
+    "$1 "* | *" $1 "* | *" $1") ;;
+    *) cm_macrodirs="$cm_macrodirs $1";;
+    esac
+}
+
+# Usage:
+#     print_m4macros_error
+# Prints an error message saying that autoconf macros were misused
+print_m4macros_error() {
+    printerr "***Error***: some autoconf macros required to build $PKG_NAME"
+    printerr "  were not found in your aclocal path, or some forbidden"
+    printerr "  macros were found.  Perhaps you need to adjust your"
+    printerr "  ACLOCAL_PATH?"
+    printerr
+}
+
+# Usage:
+#     check_m4macros
+# Checks that all the requested macro files are in the aclocal macro path
+# Uses REQUIRED_M4MACROS and ACLOCAL_PATH variables.
+check_m4macros() {
+    # construct list of macro directories
+    cm_macrodirs=`aclocal --print-ac-dir`
+    # aclocal also searches a version specific dir, eg. /usr/share/aclocal-1.9
+    # but it contains only Automake's own macros, so we can ignore it.
+
+    # Read the dirlist file
+    if [ -s $cm_macrodirs/dirlist ]; then
+	cm_dirlist=`sed 's/[ 	]*#.*//;/^$/d' $cm_macrodirs/dirlist`
+	if [ -n "$cm_dirlist" ] ; then
+	    for cm_dir in $cm_dirlist; do
+		if [ -d $cm_dir ]; then
+		    add_to_cm_macrodirs $cm_dir
+		fi
+	    done
+	fi
+    fi
+
+    # Parse $ACLOCAL_PATH
+    IFS="${IFS=	 }"; save_IFS="$IFS"; IFS=":"
+    for dir in ${ACLOCAL_PATH}; do
+	add_to_cm_macrodirs "$dir"
+    done
+    IFS="$save_IFS"
+
+    cm_status=0
+    if [ -n "$REQUIRED_M4MACROS" ]; then
+	printbold "Checking for required M4 macros..."
+	# check that each macro file is in one of the macro dirs
+	for cm_macro in $REQUIRED_M4MACROS; do
+	    cm_macrofound=false
+	    for cm_dir in $cm_macrodirs; do
+		if [ -f "$cm_dir/$cm_macro" ]; then
+		    cm_macrofound=true
+		    break
+		fi
+		# The macro dir in Cygwin environments may contain a file
+		# called dirlist containing other directories to look in.
+		if [ -f "$cm_dir/dirlist" ]; then
+		    for cm_otherdir in `cat $cm_dir/dirlist`; do
+			if [ -f "$cm_otherdir/$cm_macro" ]; then
+			    cm_macrofound=true
+		            break
+			fi
+		    done
+		fi
+	    done
+	    if $cm_macrofound; then
+		:
+	    else
+		printerr "  $cm_macro not found"
+		cm_status=1
+	    fi
+	done
+    fi
+    if [ "$cm_status" != 0 ]; then
+        print_m4macros_error
+        exit $cm_status
+    fi
+    if [ "$cm_status" != 0 ]; then
+        print_m4macros_error
+	exit $cm_status
     fi
 }
 
-echo -n "checking for autoconf >= $AUTOCONF_REQUIRED_VERSION ... "
-if (autoconf --version) < /dev/null > /dev/null 2>&1; then
-    VER=`autoconf --version | grep -iw autoconf | sed "s/.* \([0-9.]*\)[-a-z0-9]*$/\1/"`
-    check_version $VER $AUTOCONF_REQUIRED_VERSION
-else
-    echo
-    echo "  autoconf version >= $VER $AUTOCONF_REQUIRED_VERSION must bei nstalled "
-    echo "  to compile aeskulap."
-    echo "  Download the appropriate package for your distribution,"
-    echo "  or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
-    exit 1
+version_check automake AUTOMAKE automake $REQUIRED_AUTOMAKE_VERSION \
+    "http://ftp.gnu.org/pub/gnu/automake/automake-$REQUIRED_AUTOMAKE_VERSION.tar.xz"
+
+version_check autoreconf AUTORECONF autoreconf $REQUIRED_AUTORECONF_VERSION \
+    "http://ftp.gnu.org/pub/gnu/autoconf/autoconf-$REQUIRED_AUTORECONF_VERSION.tar.xz"
+
+version_check glib-gettext GLIB_GETTEXTIZE glib-gettextize $REQUIRED_GLIB_GETTEXT_VERSION \
+    "ftp://ftp.gtk.org/pub/gtk/v2.2/glib-$REQUIRED_GLIB_GETTEXT_VERSION.tar.gz"
+require_m4macro glib-gettext.m4
+
+version_check intltool INTLTOOLIZE intltoolize $REQUIRED_INTLTOOL_VERSION \
+    "http://ftp.gnome.org/pub/GNOME/sources/intltool/"
+require_m4macro intltool.m4
+
+version_check pkg-config PKG_CONFIG pkg-config $REQUIRED_PKG_CONFIG_VERSION \
+    "'http://www.freedesktop.org/software/pkgconfig/releases/pkgconfig-$REQUIRED_PKG_CONFIG_VERSION.tar.gz"
+require_m4macro pkg.m4
+
+check_m4macros
+
+if [ "$#" = 0 -a "x$NOCONFIGURE" = "x" ]; then
+  printerr "**Warning**: I am going to run \`configure' with no arguments."
+  printerr "If you wish to pass any to it, please specify them on the"
+  printerr \`$0\'" command line."
+  printerr
 fi
 
-echo -n "checking for automake >= $AUTOMAKE_REQUIRED_VERSION ... "
-if (automake --version) < /dev/null > /dev/null 2>&1; then
-    VER=`automake --version | grep -iw automake | sed "s/.* \([0-9.]*\)[-a-z0-9]*$/\1/"`
-    check_version $VER $AUTOMAKE_REQUIRED_VERSION
-else
-    echo
-    echo "  You must have automake 1.8 or newer installed to compile aeskulap."
-    echo "  Get ftp://ftp.gnu.org/pub/gnu/automake/automake-1.8.5.tar.gz"
-    echo "  (or a newer version of 1.8 if it is available; note that 1.9 is buggy)"
-    exit 1
+printbold "Processing $configure_ac"
+
+cd $srcdir
+
+# if the AC_CONFIG_MACRO_DIR() macro is used, create that directory
+# This is a automake bug fixed in automake 1.13.2
+# See http://debbugs.gnu.org/cgi/bugreport.cgi?bug=13514
+m4dir=`autoconf --trace 'AC_CONFIG_MACRO_DIR:$1'`
+if [ -n "$m4dir" ]; then
+    mkdir -p $m4dir
 fi
 
-# process dcmtk
+printbold "Running $GLIB_GETTEXTIZE... Ignore non-fatal messages."
+echo "no" | $GLIB_GETTEXTIZE --force --copy || exit 1
 
-echo "Preparing dcmtk ..."
+printbold "Running $INTLTOOLIZE..."
+$INTLTOOLIZE --force --copy --automake || exit 1
 
-cd $TOPDIR
+# Now that all the macros are sorted, run autoreconf ...
+printbold "Running autoreconf..."
+autoreconf --verbose --force --install -Wno-portability || exit 1
 
+cd "$topdir"
 
-echo "Generating build information ..."
-aclocalinclude="$ACLOCAL_FLAGS"
-
-echo "Running aclocal $aclocalinclude ..."
-aclocal $aclocalinclude || {
-    echo
-    echo "**ERROR**: aclocal failed. This may mean that you have not"
-    echo "installed all of the packages you need, or you may need to"
-    echo "set ACLOCAL_FLAGS to include \"-I \$prefix/share/aclocal\""
-    echo "for the prefix where you installed the packages whose"
-    echo "macros were not found"
-    exit 1
-}
-
-echo "Running autoheader ..."
-autoheader || {
-    echo "***ERROR*** autoheader failed."
-    exit 1
-}
-
-echo "Running libtoolize ..."
-libtoolize --automake -c || {
-    echo
-    echo "**ERROR**: intltoolize failed. This may mean that you have not"
-    echo "installed all of the packages you need. Please install the"
-    echo "'libtool' package."
-    exit 1
-}
-
-echo "Running automake ..."
-automake -c --foreign --add-missing || {
-    echo "***ERROR*** automake failed."
-    exit 1
-}
-
-echo "Running autoconf ..."
-autoconf || {
-    echo "***ERROR*** autoconf failed."
-    exit 1
-}
-
-echo "Running glib-gettextize ..."
-glib-gettextize --copy --force > /dev/null || {
-    echo
-    echo "***ERROR*** glib-gettextize failed."
-    exit 1
-}
-
-echo "Running intltoolize ..."
-intltoolize -c -f --automake || {
-    echo
-    echo "***ERROR* intltoolize failed."
-    exit 1
-}
-
-echo
-echo "Please run ./configure now."
+if test x$NOCONFIGURE = x; then
+    printbold Running $srcdir/configure "$@" ...
+    $srcdir/configure "$@" \
+	&& echo Now type \`make\' to compile $PKG_NAME || exit 1
+else
+    echo Skipping configure process.
+fi
