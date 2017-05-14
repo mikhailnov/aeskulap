@@ -46,6 +46,7 @@ libimagepool_la_LDFLAGS = \
 	$(LDFLAGS_AESKULAP_LIBS)
 
 AM_CPPFLAGS = \
+	-I$(top_srcdir) \
 	-I$(top_srcdir)/configuration \
 	$(DCMTK_CFLAGS) \
 	$(GTKMM_CFLAGS)

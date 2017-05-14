@@ -19,6 +19,7 @@ libconfiguration_la_LDFLAGS = \
 	$(LDFLAGS_AESKULAP_LIBS)
 
 AM_CPPFLAGS = \
+	-I$(top_srcdir) \
 	$(GCONFMM_CFLAGS) \
 	$(GTKMM_CFLAGS)
 

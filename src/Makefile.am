@@ -69,6 +69,7 @@ AM_CPPFLAGS = \
 	$(GLADEMM_CFLAGS) \
 	$(GCONFMM_CFLAGS) \
 	$(DCMTK_CFLAGS) \
+	-I$(top_srcdir) \
 	-I$(top_srcdir)/configuration \
 	-I$(top_srcdir)/widgets \
 	-I$(top_srcdir)/imagepool
