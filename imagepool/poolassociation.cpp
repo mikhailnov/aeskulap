@@ -42,6 +42,15 @@
 #include "dcmtk/dcmjpeg/djrplol.h"
 #include "dcmtk/dcmjpeg/djrploss.h"
 
+#if OFFIS_DCMTK_VERSION_NUMBER <= 360
+#  define EXS_JPEGProcess1      EXS_JPEGProcess1TransferSyntax
+#  define EXS_JPEGProcess2_4    EXS_JPEGProcess2_4TransferSyntax
+#  define EXS_JPEGProcess6_8    EXS_JPEGProcess6_8TransferSyntax
+#  define EXS_JPEGProcess10_12  EXS_JPEGProcess10_12TransferSyntax
+#  define EXS_JPEGProcess14     EXS_JPEGProcess14TransferSyntax
+#  define EXS_JPEGProcess14SV1  EXS_JPEGProcess14SV1TransferSyntax
+#endif
+
 
 Association::Association() :
 m_abstractSyntax(NULL),
