@@ -195,64 +195,64 @@ void query_from_net(
 	DcmDataset query;
 	DcmElement* e = NULL;
 	
-	e = newDicomElement(DCM_QueryRetrieveLevel);
+	e = DcmItem::newDicomElement(DCM_QueryRetrieveLevel);
 	e->putString("STUDY");
 	query.insert(e);
 
-	e = newDicomElement(DCM_SpecificCharacterSet);
+	e = DcmItem::newDicomElement(DCM_SpecificCharacterSet);
 	e->putString(dicom_enc.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_PatientName);
+	e = DcmItem::newDicomElement(DCM_PatientName);
 	e->putString(patientsname.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_PatientID);
+	e = DcmItem::newDicomElement(DCM_PatientID);
 	e->putString(convert_string_to(patientid.c_str(), system_enc).c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_SOPClassesInStudy);
+	e = DcmItem::newDicomElement(DCM_SOPClassesInStudy);
 	query.insert(e);
 
-	e = newDicomElement(DCM_ModalitiesInStudy);
+	e = DcmItem::newDicomElement(DCM_ModalitiesInStudy);
 	e->putString(modality.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_PatientBirthDate);
+	e = DcmItem::newDicomElement(DCM_PatientBirthDate);
 	query.insert(e);
 
-	e = newDicomElement(DCM_PatientSex);
+	e = DcmItem::newDicomElement(DCM_PatientSex);
 	query.insert(e);
 
-	e = newDicomElement(DCM_StudyDate);
+	e = DcmItem::newDicomElement(DCM_StudyDate);
 	e->putString(date.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_StudyTime);
+	e = DcmItem::newDicomElement(DCM_StudyTime);
 	query.insert(e);
 
-	e = newDicomElement(DCM_NumberOfStudyRelatedSeries);
+	e = DcmItem::newDicomElement(DCM_NumberOfStudyRelatedSeries);
 	query.insert(e);
 
-	e = newDicomElement(DCM_NumberOfStudyRelatedInstances);
+	e = DcmItem::newDicomElement(DCM_NumberOfStudyRelatedInstances);
 	query.insert(e);
 
-	e = newDicomElement(DCM_AccessionNumber);
+	e = DcmItem::newDicomElement(DCM_AccessionNumber);
 	e->putString(accessionnumber.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_StudyID);
+	e = DcmItem::newDicomElement(DCM_StudyID);
 	query.insert(e);
 
-	e = newDicomElement(DCM_StudyInstanceUID);
+	e = DcmItem::newDicomElement(DCM_StudyInstanceUID);
 	query.insert(e);
 
-	e = newDicomElement(DCM_StudyDescription);
+	e = DcmItem::newDicomElement(DCM_StudyDescription);
 	e->putString(description.c_str());
 	query.insert(e);
 
 	// StationName not allowed in StudyRoot
-	/*e = newDicomElement(DCM_StationName);
+	/*e = DcmItem::newDicomElement(DCM_StationName);
 	e->putString(station.c_str());
 	query.insert(e);*/
 
@@ -283,36 +283,36 @@ void query_series_from_net(const std::string& studyinstanceuid, const std::strin
 	DcmDataset query;
 	DcmElement* e = NULL;
 	
-	e = newDicomElement(DCM_QueryRetrieveLevel);
+	e = DcmItem::newDicomElement(DCM_QueryRetrieveLevel);
 	e->putString("SERIES");
 	query.insert(e);
 
-	e = newDicomElement(DCM_SpecificCharacterSet);
+	e = DcmItem::newDicomElement(DCM_SpecificCharacterSet);
 	query.insert(e);
 
-	e = newDicomElement(DCM_StudyInstanceUID);
+	e = DcmItem::newDicomElement(DCM_StudyInstanceUID);
 	e->putString(studyinstanceuid.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_SeriesInstanceUID);
+	e = DcmItem::newDicomElement(DCM_SeriesInstanceUID);
 	query.insert(e);
 
-	e = newDicomElement(DCM_SeriesNumber);
+	e = DcmItem::newDicomElement(DCM_SeriesNumber);
 	query.insert(e);
 
-	e = newDicomElement(DCM_Modality);
+	e = DcmItem::newDicomElement(DCM_Modality);
 	query.insert(e);
 
-	e = newDicomElement(DCM_SeriesDescription);
+	e = DcmItem::newDicomElement(DCM_SeriesDescription);
 	query.insert(e);
 
-	e = newDicomElement(DCM_SeriesTime);
+	e = DcmItem::newDicomElement(DCM_SeriesTime);
 	query.insert(e);
 
-	e = newDicomElement(DCM_StationName);
+	e = DcmItem::newDicomElement(DCM_StationName);
 	query.insert(e);
 
-	e = newDicomElement(DCM_NumberOfSeriesRelatedInstances);
+	e = DcmItem::newDicomElement(DCM_NumberOfSeriesRelatedInstances);
 	query.insert(e);
 
 
@@ -356,22 +356,22 @@ int query_series_instances(const std::string& studyinstanceuid, const std::strin
 	DcmDataset query;
 	DcmElement* e = NULL;
 	
-	e = newDicomElement(DCM_QueryRetrieveLevel);
+	e = DcmItem::newDicomElement(DCM_QueryRetrieveLevel);
 	e->putString("IMAGE");
 	query.insert(e);
 
-	e = newDicomElement(DCM_StudyInstanceUID);
+	e = DcmItem::newDicomElement(DCM_StudyInstanceUID);
 	e->putString(studyinstanceuid.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_SeriesInstanceUID);
+	e = DcmItem::newDicomElement(DCM_SeriesInstanceUID);
 	e->putString(seriesinstanceuid.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_SOPInstanceUID);
+	e = DcmItem::newDicomElement(DCM_SOPInstanceUID);
 	query.insert(e);
 
-	e = newDicomElement(DCM_InstanceNumber);
+	e = DcmItem::newDicomElement(DCM_InstanceNumber);
 	query.insert(e);
 
 	std::cout << "NEW QUERY:" << std::endl;
@@ -393,21 +393,21 @@ int query_study_series(const std::string& studyinstanceuid, const std::string& s
 	DcmDataset query;
 	DcmElement* e = NULL;
 	
-	e = newDicomElement(DCM_QueryRetrieveLevel);
+	e = DcmItem::newDicomElement(DCM_QueryRetrieveLevel);
 	e->putString("SERIES");
 	query.insert(e);
 
-	e = newDicomElement(DCM_StudyInstanceUID);
+	e = DcmItem::newDicomElement(DCM_StudyInstanceUID);
 	e->putString(studyinstanceuid.c_str());
 	query.insert(e);
 
-	e = newDicomElement(DCM_SeriesInstanceUID);
+	e = DcmItem::newDicomElement(DCM_SeriesInstanceUID);
 	query.insert(e);
 
-	e = newDicomElement(DCM_SeriesNumber);
+	e = DcmItem::newDicomElement(DCM_SeriesNumber);
 	query.insert(e);
 
-	e = newDicomElement(DCM_Modality);
+	e = DcmItem::newDicomElement(DCM_Modality);
 	query.insert(e);
 
 	std::cout << "NEW QUERY:" << std::endl;

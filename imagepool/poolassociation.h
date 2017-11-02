@@ -100,7 +100,7 @@ public:
 			return false;
 			}
 
-		DcmElement *elem = newDicomElement(tag);
+		DcmElement *elem = DcmItem::newDicomElement(tag);
 		if (elem == NULL) {
 			printf("cannot create element for tag: (%04x,%04x)", g, e);
 			return false;

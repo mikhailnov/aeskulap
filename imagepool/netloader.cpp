@@ -101,29 +101,29 @@ bool NetLoader::run() {
 		DcmDataset query;
 		DcmElement* e = NULL;
 		
-		e = newDicomElement(DCM_QueryRetrieveLevel);
+		e = DcmItem::newDicomElement(DCM_QueryRetrieveLevel);
 		e->putString("STUDY");
 		query.insert(e);
 
-		e = newDicomElement(DCM_PatientName);
+		e = DcmItem::newDicomElement(DCM_PatientName);
 		query.insert(e);
 
-		e = newDicomElement(DCM_PatientID);
+		e = DcmItem::newDicomElement(DCM_PatientID);
 		query.insert(e);
 
-		e = newDicomElement(DCM_StudyDate);
+		e = DcmItem::newDicomElement(DCM_StudyDate);
 		query.insert(e);
 
-		e = newDicomElement(DCM_StudyTime);
+		e = DcmItem::newDicomElement(DCM_StudyTime);
 		query.insert(e);
 
-		e = newDicomElement(DCM_AccessionNumber);
+		e = DcmItem::newDicomElement(DCM_AccessionNumber);
 		query.insert(e);
 
-		e = newDicomElement(DCM_StudyID);
+		e = DcmItem::newDicomElement(DCM_StudyID);
 		query.insert(e);
 	
-		e = newDicomElement(DCM_StudyInstanceUID);
+		e = DcmItem::newDicomElement(DCM_StudyInstanceUID);
 		e->putString(studyinstanceuid.c_str());
 		query.insert(e);
 	
@@ -149,22 +149,22 @@ bool NetLoader::run() {
 			DcmDataset query;
 			DcmElement* e = NULL;
 			
-			e = newDicomElement(DCM_QueryRetrieveLevel);
+			e = DcmItem::newDicomElement(DCM_QueryRetrieveLevel);
 			e->putString("SERIES");
 			query.insert(e);
 		
-			e = newDicomElement(DCM_StudyInstanceUID);
+			e = DcmItem::newDicomElement(DCM_StudyInstanceUID);
 			e->putString(studyinstanceuid.c_str());
 			query.insert(e);
 		
-			e = newDicomElement(DCM_SeriesInstanceUID);
+			e = DcmItem::newDicomElement(DCM_SeriesInstanceUID);
 			e->putString(i->c_str());
 			query.insert(e);
 
-			e = newDicomElement(DCM_Modality);
+			e = DcmItem::newDicomElement(DCM_Modality);
 			query.insert(e);
 
-			e = newDicomElement(DCM_SeriesNumber);
+			e = DcmItem::newDicomElement(DCM_SeriesNumber);
 			query.insert(e);
 
 			std::cout << "C-Move request:" << std::endl;
