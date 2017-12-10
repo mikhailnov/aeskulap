@@ -105,7 +105,7 @@ AC_SUBST(DCMTK_CFLAGS)
 AC_SUBST(DCMTK_LIBS)
 
 DCMTK_CFLAGS="-DHAVE_CONFIG_H -I\$(prefix)/include"
-DCMTK_LIBS="-L\$(prefix)/lib -ldcmjpeg -lijg8 -lijg12 -lijg16 -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -loflog -lofstd -lwrap"
+DCMTK_LIBS="-L\$(prefix)/lib -ldcmjpeg -lijg8 -lijg12 -lijg16 -ldcmimage -ldcmimgle -ldcmnet -ldcmdata -loflog -lofstd"
 
 dnl set PREFIX
 if test "x${prefix}" = "xNONE"; then

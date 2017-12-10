@@ -26,7 +26,6 @@ BuildRequires:   libtiff-devel
 BuildRequires:   libtool
 BuildRequires:   openssl-devel
 BuildRequires:   gettext-devel
-BuildRequires:   tcp_wrappers-devel
 BuildRequires:   desktop-file-utils
 BuildRequires:   pkgconfig(gtkmm-2.4)
 BuildRequires:   pkgconfig(libglademm-2.4)
