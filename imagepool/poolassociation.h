@@ -22,6 +22,7 @@
 #ifndef IMAGEPOOL_ASSOCIATION_H
 #define IMAGEPOOL_ASSOCIATION_H
 
+#include "dicom_legacy.h"
 // dcmtk includes
 #include "dcmtk/config/osconfig.h"
 #include <dcmtk/dcmnet/assoc.h>

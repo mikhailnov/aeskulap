@@ -20,6 +20,7 @@
 */
 
 #include "imagepool.h"
+#include "dicom_legacy.h"
 #include "dcmtk/dcmdata/dcdatset.h"
 #include "dcmtk/dcmdata/dcdeftag.h"
 #include "poolfindassociation.h"
