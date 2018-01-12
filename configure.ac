@@ -115,7 +115,7 @@ else
 fi
 
 if test x"$MINGW32" = xno ; then
-LDFLAGS_AESKULAP_LIBS="-Wl,-rpath,${prefix}/lib/aeskulap -avoid-version"
+LDFLAGS_AESKULAP_LIBS="-avoid-version"
 else
 LDFLAGS_MINGW32="-mwindows"
 LDFLAGS_AESKULAP_LIBS="-avoid-version -no-undefined"

@@ -46,9 +46,6 @@ aeskulap_LDADD = \
 	$(GCONFMM_LIBS) \
 	$(DCMTK_LIBS)
 
-aeskulap_LDFLAGS = \
-	-Wl,-rpath,${prefix}/lib/aeskulap $(LDFLAGS_MINGW32)
-
 if BUILD_NOT_MINGW32
 
 schemadir = @GCONF_SCHEMA_FILE_DIR@
