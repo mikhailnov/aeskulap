@@ -49,7 +49,7 @@ protected:
 
 public:
 
-	typedef enum Type {
+	enum Type {
 		SINGLE,
 		MULTIFRAME,
 		MPEG
