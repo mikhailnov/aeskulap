@@ -1,0 +1,34 @@
+<schemalist>
+  <schema id="org.gnu.aeskulap" path="/apps/aeskulap/preferences/">
+    <key name="local-aet" type="s">
+      <default>'AESKULAP'</default>
+      <summary>Local DICOM AET</summary>
+      <description>Defines the Application Entity Title of Aeskulap for network communication.</description>
+    </key>
+    <key name="local-port" type="i">
+      <default>6000</default>
+      <summary>Local DICOM port</summary>
+      <description>Defines the TCP/IP port for network communication.</description>
+    </key>
+    <key name="characterset" type="s">
+      <default>'ISO_IR 100'</default>
+      <summary>Specific CharacterSet</summary>
+      <description>Defines the DICOM character set to use</description>
+    </key>
+    <key name="server-aet" type="as">
+      <default>[ 'ARCHIV' ]</default>
+      <summary>List of remote server AET's</summary>
+      <description>This is a list of all available remote DICOM server AET's.</description>
+    </key>
+    <key name="server-port" type="ai">
+      <default>[ 6100 ]</default>
+      <summary>List of remote server ports</summary>
+      <description>This is a list of all available remote DICOM server ports.</description>
+    </key>
+    <key name="server-hostname" type="as">
+      <default>[ 'shuttle' ]</default>
+      <summary>List of remote server hostnames</summary>
+      <description>This is a list of all available remote DICOM server hostnames.</description>
+    </key>
+  </schema>
+</schemalist>
