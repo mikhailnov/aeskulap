@@ -48,6 +48,15 @@ aeskulap_LDADD = \
 
 if BUILD_NOT_MINGW32
 
+if  USE_GSETTINGS
+# gsettings_SCHEMAS is a list of all the schemas you want to install
+gsettings_SCHEMAS = org.gnu.aeskulap.gschema.xml
+
+# include the appropriate makefile rules for schema handling
+@GSETTINGS_RULES@
+
+else 
+
 schemadir = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = aeskulap.schemas
 
@@ -57,6 +66,7 @@ if GCONF_SCHEMAS_INSTALL
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
 endif
+endif 
 endif
 
 AM_CPPFLAGS = \
