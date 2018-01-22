@@ -43,6 +43,8 @@ void Configuration::add_default_presets_ct() {
         // Spine       W:  300  C:  40
         // Vertebrae   W:  2300 C:  530
 
+	WindowLevelList w;
+	set_windowlevel_list("CT", w);
         set_windowlevel(WindowLevel(gettext("Abdomen"), "CT", 50, 250));
         set_windowlevel(WindowLevel(gettext("Head"), "CT", 50, 150));
         set_windowlevel(WindowLevel(gettext("Lung"), "CT", -550, 2000));

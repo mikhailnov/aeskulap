@@ -20,8 +20,8 @@
       <summary>List of remote server AET's</summary>
       <description>This is a list of all available remote DICOM server AET's.</description>
     </key>
-    <key name="server-port" type="ai">
-      <default>[ 6100 ]</default>
+    <key name="server-port" type="as">
+      <default>[ '6100' ]</default>
       <summary>List of remote server ports</summary>
       <description>This is a list of all available remote DICOM server ports.</description>
     </key>
@@ -30,12 +30,38 @@
       <summary>List of remote server hostnames</summary>
       <description>This is a list of all available remote DICOM server hostnames.</description>
     </key>
+    <key name="server-description" type="as">
+      <default>[ 'example server' ]</default>
+      <summary>Description of the server </summary>
+      <description>This is a list of the descriptions of the available remote DICOM servers.</description>
+    </key>
+    <key name="server-group" type="as">
+      <default>[ 'example group' ]</default>
+      <summary>Server group</summary>
+      <description>Group this servers belongs to.</description>
+    </key>
+    <key name="server-lossy" type="as">
+      <default>[ 'false' ]</default>
+      <summary>Prefer lossy jpeg</summary>
+      <description>Prefer lossy jpeg</description>
+    </key>
+    <key name="server-relational" type="as">
+      <default>[ 'false' ]</default>
+      <summary>Support relational requests.</summary>
+      <description>Support relational requests</description>
+    </key>
   </schema>
-  <schema id="org.gnu.aeskulap.modality">
+  <schema id="org.gnu.aeskulap.presets" path="/org/gnu/aeskulap/presets/">
   </schema>
-  <schema id="org.gnu.aeskulap.modality.tissue">
+  <schema id="org.gnu.aeskulap.presets.modality">
+    <key name="type" type="as">
+     <default>[]</default>
+    <summary>Modality types.</summary>
+  </key>
+  </schema>
+  <schema id="org.gnu.aeskulap.presets.modality.tissue">
     <key name="center" type="i">
-      <default>128</default>
+     <default>128</default>
       <summary>Tissue center intensity.</summary>
     </key>
     <key name="width" type="i">

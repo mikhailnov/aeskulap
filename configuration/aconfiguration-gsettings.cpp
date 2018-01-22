@@ -68,7 +68,7 @@ Configuration::Configuration() {
 
 std::string Configuration::get_local_aet() {
 
-        Glib::ustring local_aet = impl->settings_prefs->get_string("local_aet");
+        Glib::ustring local_aet = impl->settings_prefs->get_string("local-aet");
 
         if(local_aet.empty()) {
                 local_aet = "AESKULAP";
@@ -79,12 +79,12 @@ std::string Configuration::get_local_aet() {
 }
 
 void Configuration::set_local_aet(const std::string& aet) {
-        impl->settings_prefs->set_string("local_aet", aet);
+        impl->settings_prefs->set_string("local-aet", aet);
 }
 
 unsigned int Configuration::get_local_port() {
 
-        gint local_port = impl->settings_prefs->get_int("local_port");
+        gint local_port = impl->settings_prefs->get_int("local-port");
 
         if(local_port <= 0) {
                 local_port = 6000;
@@ -98,7 +98,7 @@ void Configuration::set_local_port(unsigned int port) {
         if(port <= 0) {
                 port = 6000;
         }
-        impl->settings_prefs->set_int("local_port", (gint)port);
+        impl->settings_prefs->set_int("local-port", (gint)port);
 }
 
 std::string Configuration::get_encoding() {
@@ -141,13 +141,13 @@ std::vector<bool> convert_to_bool_array(const std::vector<Glib::ustring>& in) {
 Configuration::ServerList* Configuration::get_serverlist() {
         Configuration::ServerList* list = new Configuration::ServerList;
 
-        std::vector<Glib::ustring> aet_list = impl->settings_prefs->get_string_array("server_aet");
-        std::vector<int> port_list = convert_to_int_array(impl->settings_prefs->get_string_array("server_port"));
-        std::vector<Glib::ustring> hostname_list = impl->settings_prefs->get_string_array("server_hostname");
-        std::vector<Glib::ustring> description_list = impl->settings_prefs->get_string_array("server_description");
-        std::vector<Glib::ustring> group_list = impl->settings_prefs->get_string_array("server_group");
-        std::vector<bool> lossy_list = convert_to_bool_array(impl->settings_prefs->get_string_array("server_lossy"));
-        std::vector<bool> relational_list = convert_to_bool_array(impl->settings_prefs->get_string_array("server_relational"));
+        std::vector<Glib::ustring> aet_list = impl->settings_prefs->get_string_array("server-aet");
+        std::vector<int> port_list = convert_to_int_array(impl->settings_prefs->get_string_array("server-port"));
+        std::vector<Glib::ustring> hostname_list = impl->settings_prefs->get_string_array("server-hostname");
+        std::vector<Glib::ustring> description_list = impl->settings_prefs->get_string_array("server-description");
+        std::vector<Glib::ustring> group_list = impl->settings_prefs->get_string_array("server-group");
+        std::vector<bool> lossy_list = convert_to_bool_array(impl->settings_prefs->get_string_array("server-lossy"));
+        std::vector<bool> relational_list = convert_to_bool_array(impl->settings_prefs->get_string_array("server-relational"));
 
         auto a = aet_list.begin();
         auto p = port_list.begin();
@@ -219,24 +219,28 @@ void Configuration::set_serverlist(std::vector<ServerData>& list) {
                 relational_list.push_back(i->m_relational ? "true": "false");
         }
 
-        impl->settings_prefs->set_string_array("server_aet", aet_list);
-        impl->settings_prefs->set_string_array("server_hostname", hostname_list);
-        impl->settings_prefs->set_string_array("server_port", port_list);
-        impl->settings_prefs->set_string_array("server_description", description_list);
-        impl->settings_prefs->set_string_array("server_group", group_list);
-        impl->settings_prefs->set_string_array("server_lossy", lossy_list);
-        impl->settings_prefs->set_string_array("server_relational", relational_list);
+        impl->settings_prefs->set_string_array("server-aet", aet_list);
+        impl->settings_prefs->set_string_array("server-hostname", hostname_list);
+        impl->settings_prefs->set_string_array("server-port", port_list);
+        impl->settings_prefs->set_string_array("server-description", description_list);
+        impl->settings_prefs->set_string_array("server-group", group_list);
+        impl->settings_prefs->set_string_array("server-lossy", lossy_list);
+        impl->settings_prefs->set_string_array("server-relational", relational_list);
 }
 
 bool Configuration::get_windowlevel(const Glib::ustring&  modality, const Glib::ustring& desc, WindowLevel& w) {
 
 	auto modality_settings = impl->settings_presets->get_child(modality); 
-	if (!modality_settings) 
+	if (!modality_settings) {
+		g_warning("Modality %s not found", modality.c_str()); 
 		return false; 
+	}
 	
 	auto tissue_settings = modality_settings->get_child(desc); 
-	if (!tissue_settings) 
+	if (!tissue_settings) {
+		g_warning("tissue setting for %s not found in %s", desc.c_str(), modality.c_str()); 
 		return false; 
+	}
 
         w.modality = modality;
         w.description = desc;
@@ -246,19 +250,41 @@ bool Configuration::get_windowlevel(const Glib::ustring&  modality, const Glib::
         return true;
 }
 
+static bool has_child(PSettings settings, const Glib::ustring& key)
+{
+	auto children = settings->list_children();
+	if (children.empty()) {
+		std::string pp = settings->property_path(); 
+		g_message("Settings %s has no children", pp.c_str()); 
+	}
+	
+	for (auto i : children) {
+		g_message("Found child %s searching for %s", i.c_str(), key.c_str()); 
+	} 
+	
+	return std::find(children.begin(), children.end(), key) != children.end(); 
+}
+
 bool Configuration::get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list) {
 	
-        if(modality.empty()) {
+	if(modality.empty()) {
+		g_warning("No modality given"); 
                 return false;
         }
 
+        if (!has_child(impl->settings_presets, modality)) {
+		g_warning("Modality %s not found in presets", modality.c_str()); 
+		return false; 
+	}
+		
+        
         auto modality_settings = impl->settings_presets->get_child(modality); 
-	if (!modality_settings) 
-		return false; 
-
+	
         auto dirs = modality_settings->list_children();
-	if (dirs.empty()) 
+	if (dirs.empty()) {
+		g_warning("Modality %s has no children", modality.c_str()); 
 		return false; 
+	}
 
         for(unsigned int i=0; i<dirs.size(); i++) {
                 WindowLevel w;
@@ -273,18 +299,27 @@ bool Configuration::get_windowlevel_list(const Glib::ustring& modality, WindowLe
 
 bool Configuration::set_windowlevel(const WindowLevel& w) {
 	
-        auto modality_settings = impl->settings_presets->get_child(w.modality); 
-	g_assert(modality_settings); 
-	g_return_val_if_fail(modality_settings, false); 
+	PSettings modality_settings; 
+	if (has_child(impl->settings_presets, w.modality)) {
+		modality_settings = impl->settings_presets->get_child(w.modality); 
+	} else {
+		std::string pp = impl->settings_presets->property_path(); 
+		pp.append(w.modality).append("/");
 		
-	auto tissue_settings = modality_settings->get_child(w.description); 
+		modality_settings = Settings::create("org.gnu.aeskulap.presets.modality", pp);
+		g_message("create new child settings of type org.gnu.aeskulap.presets.modality at %s", pp.c_str());   
+	}
 	
-	if (!tissue_settings) {
+	PSettings tissue_settings; 
+	
+	if (!has_child(modality_settings, w.description)) {
 		// create settings 
 		std::string pp = modality_settings->property_path(); 
-		pp.append("/").append(w.description);
+		pp.append(w.description).append("/");
 		
 		tissue_settings = Settings::create("org.gnu.aeskulap.presets.modality.tissue", pp); 
+	} else {
+		tissue_settings = modality_settings->get_child(w.description);
 	}
 	
 	tissue_settings->set_int("center", w.center);
@@ -293,16 +328,21 @@ bool Configuration::set_windowlevel(const WindowLevel& w) {
         return true;
 }
 
+
+
 bool Configuration::set_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list) {
 
-	auto modality_settings = impl->settings_presets->get_child(modality); 
-	if (!modality_settings) {
+	PSettings modality_settings; 
+	if (has_child(impl->settings_presets, modality)) {
+		modality_settings = impl->settings_presets->get_child(modality); 
+	} else {
 		std::string pp = impl->settings_presets->property_path(); 
-		pp.append("/").append(modality);
+		pp.append(modality).append("/");
 		
 		modality_settings = Settings::create("org.gnu.aeskulap.presets.modality", pp);
+		g_message("create new child settings of type org.gnu.aeskulap.presets.modality at %s", pp.c_str());   
 	}
-	
+
         for(auto i = list.begin(); i != list.end(); i++) {
                 i->second.modality = modality;
                 set_windowlevel(i->second);
@@ -312,11 +352,15 @@ bool Configuration::set_windowlevel_list(const Glib::ustring& modality, WindowLe
 }
 
 bool Configuration::unset_windowlevels(const Glib::ustring& modality) {
-	auto modality_settings = impl->settings_presets->get_child(modality); 
-	if (modality_settings) {
-		auto tissues = modality_settings->list_keys();
-		for (auto k: tissues)
-			modality_settings->reset(k); 
+	
+	if (has_child(impl->settings_presets, modality)) {
+		PSettings modality_settings = impl->settings_presets->get_child(modality); 
+		for (auto k: modality_settings->list_children()) {
+			PSettings t_settings = modality_settings->get_child(k); 
+			for (auto i: t_settings->list_children()) {
+				t_settings->reset(i);
+			}
+		}
 	}
 	return true; 
 }
