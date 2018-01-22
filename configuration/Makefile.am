@@ -36,6 +36,4 @@ AM_CPPFLAGS = \
 
 EXTRA_DIST = \
    aconfiguration-gsettings.cpp \
-   aconfiguration-gconf.cpp \
-
-
+   aconfiguration-gconf.cpp

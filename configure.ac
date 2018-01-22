@@ -111,16 +111,14 @@ else
    AC_SUBST(GCONFMM_LIBS)
    AC_DEFINE(HAVE_GCONFMM, 1, [Have gconfmm settings backend])
 
+  AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+  if test x"$GCONFTOOL" = xno ; then
+     AC_MSG_ERROR([gconftool2 executable not found in your path - should be
+  installed with GConf])
+  fi
 fi
 
-
-
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-if test x"$GCONFTOOL" = xno ; then
-   AC_MSG_ERROR([gconftool2 executable not found in your path - should be
-installed with GConf])
-fi
-
+dnl not WIN32
 fi
 
 

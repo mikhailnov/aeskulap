@@ -53,7 +53,7 @@ public:
 		SINGLE,
 		MULTIFRAME,
 		MPEG
-	} Type;
+	};
 
 
 	typedef struct _Point {

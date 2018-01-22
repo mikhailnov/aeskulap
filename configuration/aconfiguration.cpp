@@ -67,22 +67,3 @@ Glib::ustring Configuration::get_name_from_path(const Glib::ustring& path) {
 
 } // namespace Aeskulap
 
-
-#ifdef WIN32
-
-// WIN32 configuration backend
-
-#include "aconfiguration-win32.cpp"
-
-#elif HAVE_GSETTINGS
-
-#include "aconfiguration-gsettings.cpp"
-
-#else
-
-// gconf configuration backend
-
-#include "aconfiguration-gconf.cpp"
-
-#endif
-
