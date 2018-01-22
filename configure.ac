@@ -96,13 +96,14 @@ AC_ARG_WITH(gsettings, [AS_HELP_STRING([--with-gsettings],
 if test "x$with_gsettings" = "xyes"; then
 
   echo "Using GSettings"
-
+  
+  GLIB_GSETTINGS
   HAVE_GSETTINGS=1
 
   AC_SUBST(HAVE_GSETTINGS)
   AC_DEFINE(HAVE_GSETTINGS, 1, [use gsettings configuration backend])
   AM_CONDITIONAL(USE_GSETTINGS, test "x$with_gsettings" = "xyes")
-
+  
 else
    echo "falling back to old gconf backend"
 

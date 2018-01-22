@@ -1,5 +1,5 @@
 <schemalist>
-  <schema id="org.gnu.aeskulap" path="/apps/aeskulap/preferences/">
+  <schema id="org.gnu.aeskulap" path="/org/gnu/aeskulap/settings/">
     <key name="local-aet" type="s">
       <default>'AESKULAP'</default>
       <summary>Local DICOM AET</summary>
@@ -32,17 +32,14 @@
     </key>
   </schema>
   <schema id="org.gnu.aeskulap.modality">
-    <key name="tissue_window" type="as">
-      <default>[]</default>
-      <summary>Tissue to specify window levels for.</summary>
-      <description>This is a list of tissues set per modality.</description>
-    </key>
   </schema>
   <schema id="org.gnu.aeskulap.modality.tissue">
     <key name="center" type="i">
+      <default>128</default>
       <summary>Tissue center intensity.</summary>
     </key>
     <key name="width" type="i">
+      <default>128</default>
       <summary>Tissue intensity width.</summary>
     </key>
   </schema>
