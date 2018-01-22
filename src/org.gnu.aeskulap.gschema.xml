@@ -52,12 +52,16 @@
     </key>
   </schema>
   <schema id="org.gnu.aeskulap.presets" path="/org/gnu/aeskulap/presets/">
+   <key name="modalities" type="as">
+     <default>[]</default>
+     <summary>Modality names stored.</summary>
+    </key>
   </schema>
   <schema id="org.gnu.aeskulap.presets.modality">
-    <key name="type" type="as">
+    <key name="tissue-types" type="as">
      <default>[]</default>
-    <summary>Modality types.</summary>
-  </key>
+     <summary>Tissue types stored.</summary>
+    </key>
   </schema>
   <schema id="org.gnu.aeskulap.presets.modality.tissue">
     <key name="center" type="i">

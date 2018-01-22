@@ -250,20 +250,14 @@ bool Configuration::get_windowlevel(const Glib::ustring&  modality, const Glib::
         return true;
 }
 
-static bool has_child(PSettings settings, const Glib::ustring& key)
+static PSettings get_child_tree(PSettings settings, const Glib::ustring& key, const Glib::ustring& scheme)
 {
-	auto children = settings->list_children();
-	if (children.empty()) {
-		std::string pp = settings->property_path(); 
-		g_message("Settings %s has no children", pp.c_str()); 
-	}
-	
-	for (auto i : children) {
-		g_message("Found child %s searching for %s", i.c_str(), key.c_str()); 
-	} 
-	
-	return std::find(children.begin(), children.end(), key) != children.end(); 
+	std::string pp = settings->property_path(); 
+	pp.append(key).append("/");
+	g_message("Get child tree at %s", pp.c_str()); 
+	return Settings::create(scheme, pp);
 }
+
 
 bool Configuration::get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list) {
 	
@@ -272,96 +266,103 @@ bool Configuration::get_windowlevel_list(const Glib::ustring& modality, WindowLe
                 return false;
         }
 
-        if (!has_child(impl->settings_presets, modality)) {
+        std::vector<Glib::ustring> supported_modalities = impl->settings_presets->get_string_array("modalities"); 
+	auto m = find(supported_modalities.begin(), supported_modalities.end(), modality); 
+	if (m == supported_modalities.end()) {
 		g_warning("Modality %s not found in presets", modality.c_str()); 
 		return false; 
 	}
-		
-        
-        auto modality_settings = impl->settings_presets->get_child(modality); 
 	
-        auto dirs = modality_settings->list_children();
-	if (dirs.empty()) {
-		g_warning("Modality %s has no children", modality.c_str()); 
-		return false; 
-	}
-
-        for(unsigned int i=0; i<dirs.size(); i++) {
-                WindowLevel w;
+	auto modality_settings = get_child_tree(impl->settings_presets, modality, "org.gnu.aeskulap.presets.modality"); 
+	
+	std::vector<Glib::ustring> supported_tissues = modality_settings->get_string_array("tissue-types");
+	
+        for(const auto& tissue:  supported_tissues) {
+		WindowLevel w;
 		w.modality = modality; 
-		w.description = dirs[i]; 
-		auto tissue_settings = modality_settings->get_child(w.description); 
+		w.description = tissue; 
+		
+		auto tissue_settings = get_child_tree(modality_settings, tissue, "org.gnu.aeskulap.presets.modality.tissue"); 
+		
 		w.center = tissue_settings->get_int("center");
 		w.width = tissue_settings->get_int("width");
+		list[tissue] = w;
         }
         return true;
 }
 
 bool Configuration::set_windowlevel(const WindowLevel& w) {
 	
-	PSettings modality_settings; 
-	if (has_child(impl->settings_presets, w.modality)) {
-		modality_settings = impl->settings_presets->get_child(w.modality); 
-	} else {
-		std::string pp = impl->settings_presets->property_path(); 
-		pp.append(w.modality).append("/");
-		
-		modality_settings = Settings::create("org.gnu.aeskulap.presets.modality", pp);
-		g_message("create new child settings of type org.gnu.aeskulap.presets.modality at %s", pp.c_str());   
+	std::vector<Glib::ustring> supported_modalities = impl->settings_presets->get_string_array("modalities"); 
+	if (find(supported_modalities.begin(), supported_modalities.end(), w.modality) == supported_modalities.end()) {
+		supported_modalities.push_back(w.modality); 
+		impl->settings_presets->set_string_array("modalities", supported_modalities); 
 	}
 	
-	PSettings tissue_settings; 
+	auto modality_settings = get_child_tree(impl->settings_presets, w.modality, "org.gnu.aeskulap.presets.modality"); 
+	std::vector<Glib::ustring> tissues = modality_settings->get_string_array("tissue-types");
 	
-	if (!has_child(modality_settings, w.description)) {
-		// create settings 
-		std::string pp = modality_settings->property_path(); 
-		pp.append(w.description).append("/");
-		
-		tissue_settings = Settings::create("org.gnu.aeskulap.presets.modality.tissue", pp); 
-	} else {
-		tissue_settings = modality_settings->get_child(w.description);
+	if (find(tissues.begin(), tissues.end(), w.description) == tissues.end()) {
+		tissues.push_back(w.description); 
+		modality_settings->set_string_array("tissue-types", tissues);
 	}
 	
+	auto tissue_settings = get_child_tree(modality_settings, w.description, "org.gnu.aeskulap.presets.modality.tissue"); 
+		
 	tissue_settings->set_int("center", w.center);
 	tissue_settings->set_int("width", w.width);
 
-        return true;
+	return true;
 }
 
 
 
 bool Configuration::set_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list) {
 
-	PSettings modality_settings; 
-	if (has_child(impl->settings_presets, modality)) {
-		modality_settings = impl->settings_presets->get_child(modality); 
-	} else {
-		std::string pp = impl->settings_presets->property_path(); 
-		pp.append(modality).append("/");
-		
-		modality_settings = Settings::create("org.gnu.aeskulap.presets.modality", pp);
-		g_message("create new child settings of type org.gnu.aeskulap.presets.modality at %s", pp.c_str());   
+	std::vector<Glib::ustring> supported_modalities = impl->settings_presets->get_string_array("modalities"); 
+	if (find(supported_modalities.begin(), supported_modalities.end(), modality) == supported_modalities.end()) {
+		supported_modalities.push_back(modality); 
+		impl->settings_presets->set_string_array("modalities", supported_modalities); 
 	}
-
+	
+	
+	auto modality_settings = get_child_tree(impl->settings_presets, modality, "org.gnu.aeskulap.presets.modality"); 
+	std::vector<Glib::ustring> tissues = modality_settings->get_string_array("tissue-types");
+	
+	
         for(auto i = list.begin(); i != list.end(); i++) {
+		auto& t = i->second.description; 
+		if (find(tissues.begin(), tissues.end(), t) == tissues.end())
+			tissues.push_back(t); 
+		
                 i->second.modality = modality;
-                set_windowlevel(i->second);
-        }
+		
+		auto tissue_settings = get_child_tree(modality_settings, t, "org.gnu.aeskulap.presets.modality.tissue"); 
+		
+		tissue_settings->set_int("center", i->second.center);
+		tissue_settings->set_int("width", i->second.width);
+	}
+	modality_settings->set_string_array("tissue-types", tissues);
 
         return true;
 }
 
 bool Configuration::unset_windowlevels(const Glib::ustring& modality) {
 	
-	if (has_child(impl->settings_presets, modality)) {
-		PSettings modality_settings = impl->settings_presets->get_child(modality); 
-		for (auto k: modality_settings->list_children()) {
-			PSettings t_settings = modality_settings->get_child(k); 
-			for (auto i: t_settings->list_children()) {
-				t_settings->reset(i);
-			}
-		}
+	std::vector<Glib::ustring> supported_modalities = impl->settings_presets->get_string_array("modalities"); 
+	auto m = find(supported_modalities.begin(), supported_modalities.end(), modality); 
+	if (m == supported_modalities.end()) 
+		return true; 
+	
+	auto modality_settings = get_child_tree(impl->settings_presets, modality, "org.gnu.aeskulap.presets.modality"); 
+	std::vector<Glib::ustring> tissues = modality_settings->get_string_array("tissue-types");
+	
+	for (auto& t: tissues) {
+		auto tissue_settings = get_child_tree(modality_settings, t, "org.gnu.aeskulap.presets.modality.tissue"); 
+		tissue_settings->reset("center"); 
+		tissue_settings->reset("width"); 
 	}
+	
 	return true; 
 }
 
