@@ -212,7 +212,7 @@ void Configuration::set_serverlist(std::vector<ServerData>& list) {
         for(i = list.begin(); i != list.end(); i++) {
                 aet_list. push_back(i->m_aet);
                 hostname_list.push_back(i->m_hostname);
-                port_list.push_back( Glib::ustring::compose("%d", i->m_port));
+                port_list.push_back( Glib::ustring::compose("%1", i->m_port));
                 description_list.push_back(i->m_name);
                 group_list.push_back(i->m_group);
                 lossy_list.push_back(i->m_lossy ? "true": "false");
