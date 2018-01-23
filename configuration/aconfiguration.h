@@ -26,7 +26,10 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <config.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
 
 #include "awindowlevel.h"
 
