@@ -79,7 +79,7 @@ public:
         void set_encoding(const std::string& encoding);
 
         bool get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list);
-	
+
 	bool set_windowlevel(const WindowLevel& w);
 
 	bool set_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list);
@@ -92,8 +92,8 @@ protected:
 
 private:
         bool get_windowlevel(const Glib::ustring& modality, const Glib::ustring& desc, WindowLevel& w);
-	
-	
+
+
         // internal helper (backend independend) functions
         Glib::ustring get_name_from_path(const Glib::ustring& path);
 
