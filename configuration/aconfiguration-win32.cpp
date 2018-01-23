@@ -24,6 +24,7 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include "aconfiguration.h"
 
 
 namespace Aeskulap {
@@ -132,61 +133,61 @@ Configuration::Configuration() {
     DWORD ret;
 
     ret = RegOpenKeyEx(HKEY_CURRENT_USER, "SOFTWARE\\Aeskulap\\presets\\windowlevel\\CT", 0, KEY_READ, &hKey);
-	if(ret != ERROR_SUCCESS ) {
+        if(ret != ERROR_SUCCESS ) {
         add_default_presets_ct();
-	}
-	else
+        }
+        else
         RegCloseKey(hKey);
 
 }
 
 std::string Configuration::get_local_aet() {
-	std::string local_aet = m_conf_client->get_string("SOFTWARE\\Aeskulap\\preferences\\local_aet");
-	if(local_aet.empty()) {
-		local_aet = "AESKULAP";
-		set_local_aet(local_aet);
-	}
+        std::string local_aet = m_conf_client->get_string("SOFTWARE\\Aeskulap\\preferences\\local_aet");
+        if(local_aet.empty()) {
+                local_aet = "AESKULAP";
+                set_local_aet(local_aet);
+        }
 
-	return local_aet;
+        return local_aet;
 }
 
 void Configuration::set_local_aet(const std::string& aet) {
-	m_conf_client->set("SOFTWARE\\Aeskulap\\preferences\\local_aet", aet);
+        m_conf_client->set("SOFTWARE\\Aeskulap\\preferences\\local_aet", aet);
 }
 
 unsigned int Configuration::get_local_port() {
-	gint local_port = m_conf_client->get_int("SOFTWARE\\Aeskulap\\preferences\\local_port");
-	if(local_port <= 0) {
-		local_port = 6000;
-		set_local_port(local_port);
-	}
-	return (unsigned int)local_port;
+        gint local_port = m_conf_client->get_int("SOFTWARE\\Aeskulap\\preferences\\local_port");
+        if(local_port <= 0) {
+                local_port = 6000;
+                set_local_port(local_port);
+        }
+        return (unsigned int)local_port;
 }
 
 void Configuration::set_local_port(unsigned int port) {
-	if(port <= 0) {
-		port = 6000;
-	}
-	m_conf_client->set("SOFTWARE\\Aeskulap\\preferences\\local_port", port);
+        if(port <= 0) {
+                port = 6000;
+        }
+        m_conf_client->set("SOFTWARE\\Aeskulap\\preferences\\local_port", port);
 }
 
 std::string Configuration::get_encoding() {
-	std::string charset = m_conf_client->get_string("SOFTWARE\\Aeskulap\\preferences\\characterset");
+        std::string charset = m_conf_client->get_string("SOFTWARE\\Aeskulap\\preferences\\characterset");
 
-	if(charset.empty()) {
-		charset = "ISO_IR 100";
-		set_encoding(charset);
-	}
+        if(charset.empty()) {
+                charset = "ISO_IR 100";
+                set_encoding(charset);
+        }
 
-	return charset;
+        return charset;
 }
 
 void Configuration::set_encoding(const std::string& encoding) {
-	m_conf_client->set("SOFTWARE\\Aeskulap\\preferences\\characterset", encoding);
+        m_conf_client->set("SOFTWARE\\Aeskulap\\preferences\\characterset", encoding);
 }
 
 Configuration::ServerList* Configuration::get_serverlist() {
-	Configuration::ServerList* list = new Configuration::ServerList;
+        Configuration::ServerList* list = new Configuration::ServerList;
     HKEY hServersKey;
     HKEY hKey;
     LONG ret;
@@ -199,7 +200,7 @@ Configuration::ServerList* Configuration::get_serverlist() {
     DWORD port;
     std::string group;
     DWORD lossy;
-	DWORD relational;
+        DWORD relational;
 
     ret = RegOpenKeyEx(HKEY_CURRENT_USER, serverKey.c_str(), 0, KEY_READ | KEY_ENUMERATE_SUB_KEYS, &hServersKey);
     if( ret != ERROR_SUCCESS )
@@ -257,7 +258,7 @@ Configuration::ServerList* Configuration::get_serverlist() {
             RegCloseKey(hKey);
     }
     /*
-	snprintf(buf, sizeof(buf), "Server%i", list->size()+1);
+        snprintf(buf, sizeof(buf), "Server%i", list->size()+1);
     strncpy(servername, buf, sizeof(servername));
     ServerData& s = (*list)[std::string(servername)];
     s.m_aet = "AET";
@@ -269,7 +270,7 @@ Configuration::ServerList* Configuration::get_serverlist() {
     */
     RegCloseKey(hServersKey);
 
-	return list;
+        return list;
 }
 
 void Configuration::set_serverlist(std::vector<ServerData>& list) {
@@ -291,9 +292,9 @@ void Configuration::set_serverlist(std::vector<ServerData>& list) {
         ret = RegDeleteKey(hServersKey, servername);
     }
 
-	for(i = list.begin(); i != list.end(); i++)
-	{
-	    ret = RegCreateKeyEx(hServersKey, i->m_name.c_str(), 0, "AESKULAP", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey, &disp);
+        for(i = list.begin(); i != list.end(); i++)
+        {
+            ret = RegCreateKeyEx(hServersKey, i->m_name.c_str(), 0, "AESKULAP", REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey, &disp);
         if( ret == ERROR_SUCCESS )
         {
             DWORD tmp;
@@ -308,8 +309,8 @@ void Configuration::set_serverlist(std::vector<ServerData>& list) {
             RegSetValueEx(hKey, "Relational", 0,REG_DWORD, (BYTE*)&tmp, sizeof(tmp));
         }
         RegCloseKey(hKey);
-	}
-	RegCloseKey(hServersKey);
+        }
+        RegCloseKey(hServersKey);
 }
 
 bool Configuration::get_windowlevel(const Glib::ustring& modality, const Glib::ustring& desc, WindowLevel& w) {
@@ -325,26 +326,26 @@ bool Configuration::get_windowlevel(const Glib::ustring& modality, const Glib::u
     if( ret != ERROR_SUCCESS )
         return false;
 
-	len = sizeof(DWORD);
-	ret = RegQueryValueEx(hKey, "center", NULL, &type, (BYTE*)&val, &len);
-	if( ret != ERROR_SUCCESS || type != REG_DWORD )
-	{
-	    RegCloseKey(hKey);
-	    return false;
-	}
-	w.center = val;
-	ret = RegQueryValueEx(hKey, "width", NULL, &type, (BYTE*)&val, &len);
-	if( ret != ERROR_SUCCESS || type != REG_DWORD )
-	{
-	    RegCloseKey(hKey);
-	    return false;
-	}
-	w.width = val;
-	RegCloseKey(hKey);
+        len = sizeof(DWORD);
+        ret = RegQueryValueEx(hKey, "center", NULL, &type, (BYTE*)&val, &len);
+        if( ret != ERROR_SUCCESS || type != REG_DWORD )
+        {
+            RegCloseKey(hKey);
+            return false;
+        }
+        w.center = val;
+        ret = RegQueryValueEx(hKey, "width", NULL, &type, (BYTE*)&val, &len);
+        if( ret != ERROR_SUCCESS || type != REG_DWORD )
+        {
+            RegCloseKey(hKey);
+            return false;
+        }
+        w.width = val;
+        RegCloseKey(hKey);
 
-	w.modality = modality;
-	w.description = desc;
-	return true;
+        w.modality = modality;
+        w.description = desc;
+        return true;
 }
 
 bool Configuration::get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list) {
@@ -355,9 +356,9 @@ bool Configuration::get_windowlevel_list(const Glib::ustring& modality, WindowLe
     char desc[256];
 
     std::string key = "SOFTWARE\\Aeskulap\\presets\\windowlevel\\" + modality ;
-	if(modality.empty()) {
-		return false;
-	}
+        if(modality.empty()) {
+                return false;
+        }
     ret = RegOpenKeyEx(HKEY_CURRENT_USER, key.c_str(), 0, KEY_READ | KEY_ENUMERATE_SUB_KEYS, &hKey);
     if( ret != ERROR_SUCCESS )
         return false;
@@ -371,43 +372,43 @@ bool Configuration::get_windowlevel_list(const Glib::ustring& modality, WindowLe
         }
     }
     RegCloseKey(hKey);
-	return true;
+        return true;
 }
 
 bool Configuration::set_windowlevel(const WindowLevel& w) {
 
-	std::string base = "SOFTWARE\\Aeskulap\\presets\\windowlevel\\"+w.modality+"\\"+w.description;
+        std::string base = "SOFTWARE\\Aeskulap\\presets\\windowlevel\\"+w.modality+"\\"+w.description;
 
-	m_conf_client->set(base+"\\center", w.center);
-	m_conf_client->set(base+"\\width", w.width);
+        m_conf_client->set(base+"\\center", w.center);
+        m_conf_client->set(base+"\\width", w.width);
 
-	return true;
+        return true;
 }
 
 bool Configuration::set_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list) {
-	WindowLevelList::iterator i;
+        WindowLevelList::iterator i;
 
-	for(i = list.begin(); i != list.end(); i++) {
-		i->second.modality = modality;
-		set_windowlevel(i->second);
-	}
+        for(i = list.begin(); i != list.end(); i++) {
+                i->second.modality = modality;
+                set_windowlevel(i->second);
+        }
 
-	return true;
+        return true;
 }
 
 bool Configuration::unset_windowlevels(const Glib::ustring& modality) {
-	std::string base = "SOFTWARE\\Aeskulap\\presets\\windowlevel\\";
-	DWORD ret;
-	HKEY hKey;
+        std::string base = "SOFTWARE\\Aeskulap\\presets\\windowlevel\\";
+        DWORD ret;
+        HKEY hKey;
 
-	ret = RegOpenKeyEx(HKEY_CURRENT_USER, base.c_str(), 0, KEY_ALL_ACCESS, &hKey);
-	if( ret!= ERROR_SUCCESS )
+        ret = RegOpenKeyEx(HKEY_CURRENT_USER, base.c_str(), 0, KEY_ALL_ACCESS, &hKey);
+        if( ret!= ERROR_SUCCESS )
         return false;
 
     ret = RegDeleteKey(hKey, modality.c_str());
     RegCloseKey(hKey);
-	return ret == ERROR_SUCCESS;
+        return ret == ERROR_SUCCESS;
 }
-		
+
 } // namespace Aeskulap
 

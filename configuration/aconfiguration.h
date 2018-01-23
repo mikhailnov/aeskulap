@@ -26,6 +26,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <config.h>
 
 #include "awindowlevel.h"
 
@@ -34,64 +35,68 @@ namespace Aeskulap {
 class Configuration {
 public:
 
-	// data structures
+        // data structures
 
-	class ServerData {
-	public:
-		Glib::ustring m_name;
-		Glib::ustring m_hostname;
-		Glib::ustring m_aet;
-		unsigned int m_port;
-		Glib::ustring m_group;
-		bool m_lossy;
-		bool m_relational;
-	};
+        class ServerData {
+        public:
+                Glib::ustring m_name;
+                Glib::ustring m_hostname;
+                Glib::ustring m_aet;
+                unsigned int m_port;
+                Glib::ustring m_group;
+                bool m_lossy;
+                bool m_relational;
+        };
 
-	typedef std::map< Glib::ustring, ServerData > ServerList;
+        typedef std::map< Glib::ustring, ServerData > ServerList;
 
 
-	// backend independent methods
+        // backend independent methods
+
+        static Configuration& get_instance();
+
+        void add_default_presets_ct();
+
+        // backend specific functions
+
+        ServerList* get_serverlist();
+
+        void set_serverlist(std::vector<ServerData>& list);
+
+        std::string get_local_aet();
+
+        void set_local_aet(const std::string& aet);
+
+        unsigned int get_local_port();
+
+        void set_local_port(unsigned int port);
+
+        std::string get_encoding();
+
+        void set_encoding(const std::string& encoding);
+
+        bool get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list);
 	
-	static Configuration& get_instance();
-
-	void add_default_presets_ct();
-
-	// backend specific functions
-
-	ServerList* get_serverlist();
-
-	void set_serverlist(std::vector<ServerData>& list);
-
-	std::string get_local_aet();
-	
-	void set_local_aet(const std::string& aet);
-
-	unsigned int get_local_port();
-	
-	void set_local_port(unsigned int port);
-
-	std::string get_encoding();
-	
-	void set_encoding(const std::string& encoding);
-
-	bool get_windowlevel(const Glib::ustring& modality, const Glib::ustring& desc, WindowLevel& w);
-
-	bool get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list);
-
 	bool set_windowlevel(const WindowLevel& w);
 
 	bool set_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list);
 
-	bool unset_windowlevels(const Glib::ustring& modality);
+        bool unset_windowlevels(const Glib::ustring& modality);
 
 protected:
 
-	Configuration();
+        Configuration();
 
 private:
+        bool get_windowlevel(const Glib::ustring& modality, const Glib::ustring& desc, WindowLevel& w);
+	
+	
+        // internal helper (backend independend) functions
+        Glib::ustring get_name_from_path(const Glib::ustring& path);
 
-	// internal helper (backend independend) functions
-	Glib::ustring get_name_from_path(const Glib::ustring& path);
+#ifdef HAVE_GSETTINGS
+        struct ConfigurationImpl *impl;
+#endif
 
 };
 

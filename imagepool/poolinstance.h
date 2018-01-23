@@ -49,11 +49,11 @@ protected:
 
 public:
 
-	typedef enum Type {
+	enum Type {
 		SINGLE,
 		MULTIFRAME,
 		MPEG
-	} Type;
+	};
 
 
 	typedef struct _Point {

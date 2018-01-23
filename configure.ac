@@ -18,11 +18,11 @@ AC_SUBST(ACLOCAL_AMFLAGS, "$ACLOCAL_FLAGS")
 
 case "$target" in
     *cygwin* | *mingw32*)
-	MINGW32="yes"
-	;;
+   MINGW32="yes"
+   ;;
     *)
-	MINGW32="no"
-	;;
+   MINGW32="no"
+   ;;
 esac
 
 dnl
@@ -82,18 +82,44 @@ PKG_CHECK_MODULES(GTHREAD, gthread-2.0)
 AC_SUBST(GTHREAD_CFLAGS)
 AC_SUBST(GTHREAD_LIBS)
 
+
+AM_CONDITIONAL(USE_MINGW, test "x$MINGW32" = "xyes")
+
 if test x"$MINGW32" = xno ; then
 
-PKG_CHECK_MODULES(GCONFMM, gconfmm-2.6 >= 2.10.0)
-AC_SUBST(GCONFMM_CFLAGS)
-AC_SUBST(GCONFMM_LIBS)
+AC_ARG_WITH(gsettings, [AS_HELP_STRING([--with-gsettings],
+            [Build with the gsettings configuration backend])],
+            [],
+            [with_gsettings=yes])
+ echo "with_gsettings='$with_gsettings'"
 
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-if test x"$GCONFTOOL" = xno ; then
-	AC_MSG_ERROR([gconftool2 executable not found in your path - should be 
-installed with GConf])
+if test "x$with_gsettings" = "xyes"; then
+
+  echo "Using GSettings"
+  
+  GLIB_GSETTINGS
+  HAVE_GSETTINGS=1
+
+  AC_SUBST(HAVE_GSETTINGS)
+  AC_DEFINE(HAVE_GSETTINGS, 1, [use gsettings configuration backend])
+  AM_CONDITIONAL(USE_GSETTINGS, test "x$with_gsettings" = "xyes")
+  
+else
+   echo "falling back to old gconf backend"
+
+   PKG_CHECK_MODULES(GCONFMM, gconfmm-2.6 >= 2.10.0)
+   AC_SUBST(GCONFMM_CFLAGS)
+   AC_SUBST(GCONFMM_LIBS)
+   AC_DEFINE(HAVE_GCONFMM, 1, [Have gconfmm settings backend])
+
+  AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+  if test x"$GCONFTOOL" = xno ; then
+     AC_MSG_ERROR([gconftool2 executable not found in your path - should be
+  installed with GConf])
+  fi
 fi
 
+dnl not WIN32
 fi
 
 
@@ -115,7 +141,7 @@ else
 fi
 
 if test x"$MINGW32" = xno ; then
-LDFLAGS_AESKULAP_LIBS="-Wl,-rpath,${prefix}/lib/aeskulap -avoid-version"
+LDFLAGS_AESKULAP_LIBS="-avoid-version"
 else
 LDFLAGS_MINGW32="-mwindows"
 LDFLAGS_AESKULAP_LIBS="-avoid-version -no-undefined"

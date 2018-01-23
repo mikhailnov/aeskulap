@@ -22,248 +22,249 @@
 #include <gconfmm.h>
 #include <cstdio>
 #include <iostream>
+#include "aconfiguration.h"
 
 namespace Aeskulap {
 
 static Glib::RefPtr<Gnome::Conf::Client> m_conf_client;
 
 Configuration::Configuration() {
-	if(!m_conf_client) {
-		std::cout << "Gnome::Conf::init()" << std::endl;
-		Gnome::Conf::init();
-		m_conf_client = Gnome::Conf::Client::get_default_client();
-	}
+        if(!m_conf_client) {
+                std::cout << "Gnome::Conf::init()" << std::endl;
+                Gnome::Conf::init();
+                m_conf_client = Gnome::Conf::Client::get_default_client();
+        }
 
-	m_conf_client->add_dir("/apps/aeskulap/preferences");
-	m_conf_client->add_dir("/apps/aeskulap/presets");
-	m_conf_client->add_dir("/apps/aeskulap/presets/windowlevel");
+        m_conf_client->add_dir("/apps/aeskulap/preferences");
+        m_conf_client->add_dir("/apps/aeskulap/presets");
+        m_conf_client->add_dir("/apps/aeskulap/presets/windowlevel");
 
-	if(!m_conf_client->dir_exists("/apps/aeskulap/presets/windowlevel/CT")) {
-		add_default_presets_ct();
-	}
+        if(!m_conf_client->dir_exists("/apps/aeskulap/presets/windowlevel/CT")) {
+                add_default_presets_ct();
+        }
 }
 
 std::string Configuration::get_local_aet() {
-	std::string local_aet = m_conf_client->get_string("/apps/aeskulap/preferences/local_aet");
+        std::string local_aet = m_conf_client->get_string("/apps/aeskulap/preferences/local_aet");
 
-	if(local_aet.empty()) {
-		local_aet = "AESKULAP";
-		set_local_aet(local_aet);
-	}
-	
-	return local_aet;
+        if(local_aet.empty()) {
+                local_aet = "AESKULAP";
+                set_local_aet(local_aet);
+        }
+
+        return local_aet;
 }
-	
+
 void Configuration::set_local_aet(const std::string& aet) {
-	m_conf_client->set("/apps/aeskulap/preferences/local_aet", aet);
+        m_conf_client->set("/apps/aeskulap/preferences/local_aet", aet);
 }
 
 unsigned int Configuration::get_local_port() {
-	m_conf_client = Gnome::Conf::Client::get_default_client();
-	gint local_port = m_conf_client->get_int("/apps/aeskulap/preferences/local_port");
+        m_conf_client = Gnome::Conf::Client::get_default_client();
+        gint local_port = m_conf_client->get_int("/apps/aeskulap/preferences/local_port");
 
-	if(local_port <= 0) {
-		local_port = 6000;
-		set_local_port(local_port);
-	}
-	
-	return (unsigned int)local_port;
+        if(local_port <= 0) {
+                local_port = 6000;
+                set_local_port(local_port);
+        }
+
+        return (unsigned int)local_port;
 }
-	
+
 void Configuration::set_local_port(unsigned int port) {
-	if(port <= 0) {
-		port = 6000;
-	}
-	m_conf_client->set("/apps/aeskulap/preferences/local_port", (gint)port);
+        if(port <= 0) {
+                port = 6000;
+        }
+        m_conf_client->set("/apps/aeskulap/preferences/local_port", (gint)port);
 }
 
 std::string Configuration::get_encoding() {
-	std::string charset = m_conf_client->get_string("/apps/aeskulap/preferences/characterset");
+        std::string charset = m_conf_client->get_string("/apps/aeskulap/preferences/characterset");
 
-	if(charset.empty()) {
-		charset = "ISO_IR 100";
-		set_encoding(charset);
-	}
-	
-	return charset;
+        if(charset.empty()) {
+                charset = "ISO_IR 100";
+                set_encoding(charset);
+        }
+
+        return charset;
 }
 
 void Configuration::set_encoding(const std::string& encoding) {
-	m_conf_client->set("/apps/aeskulap/preferences/characterset", encoding);
+        m_conf_client->set("/apps/aeskulap/preferences/characterset", encoding);
 }
 
 Configuration::ServerList* Configuration::get_serverlist() {
-	Configuration::ServerList* list = new Configuration::ServerList;
+        Configuration::ServerList* list = new Configuration::ServerList;
 
-	Gnome::Conf::SListHandle_ValueString aet_list = m_conf_client->get_string_list("/apps/aeskulap/preferences/server_aet");
-	Gnome::Conf::SListHandle_ValueInt port_list = m_conf_client->get_int_list("/apps/aeskulap/preferences/server_port");
-	Gnome::Conf::SListHandle_ValueString hostname_list = m_conf_client->get_string_list("/apps/aeskulap/preferences/server_hostname");
-	Gnome::Conf::SListHandle_ValueString description_list = m_conf_client->get_string_list("/apps/aeskulap/preferences/server_description");
-	Gnome::Conf::SListHandle_ValueString group_list = m_conf_client->get_string_list("/apps/aeskulap/preferences/server_group");
-	Gnome::Conf::SListHandle_ValueBool lossy_list = m_conf_client->get_bool_list("/apps/aeskulap/preferences/server_lossy");
-	Gnome::Conf::SListHandle_ValueBool relational_list = m_conf_client->get_bool_list("/apps/aeskulap/preferences/server_relational");
-	
-	Gnome::Conf::SListHandle_ValueString::iterator a = aet_list.begin();
-	Gnome::Conf::SListHandle_ValueInt::iterator p = port_list.begin();
-	Gnome::Conf::SListHandle_ValueString::iterator h = hostname_list.begin();
-	Gnome::Conf::SListHandle_ValueString::iterator d = description_list.begin();
-	Gnome::Conf::SListHandle_ValueString::iterator g = group_list.begin();
-	Gnome::Conf::SListHandle_ValueBool::iterator l = lossy_list.begin();
-	Gnome::Conf::SListHandle_ValueBool::iterator r = relational_list.begin();
-	
-	for(; h != hostname_list.end() && a != aet_list.end() && p != port_list.end(); a++, p++, h++) {
+        Gnome::Conf::SListHandle_ValueString aet_list = m_conf_client->get_string_list("/apps/aeskulap/preferences/server_aet");
+        Gnome::Conf::SListHandle_ValueInt port_list = m_conf_client->get_int_list("/apps/aeskulap/preferences/server_port");
+        Gnome::Conf::SListHandle_ValueString hostname_list = m_conf_client->get_string_list("/apps/aeskulap/preferences/server_hostname");
+        Gnome::Conf::SListHandle_ValueString description_list = m_conf_client->get_string_list("/apps/aeskulap/preferences/server_description");
+        Gnome::Conf::SListHandle_ValueString group_list = m_conf_client->get_string_list("/apps/aeskulap/preferences/server_group");
+        Gnome::Conf::SListHandle_ValueBool lossy_list = m_conf_client->get_bool_list("/apps/aeskulap/preferences/server_lossy");
+        Gnome::Conf::SListHandle_ValueBool relational_list = m_conf_client->get_bool_list("/apps/aeskulap/preferences/server_relational");
 
-		std::string servername;
-		if(d != description_list.end()) {
-			servername = *d;
-			d++;
-		}
-		else {
-			char buffer[50];
-			snprintf(buffer, sizeof(buffer), "Server%li", list->size()+1);
-			servername = buffer;
-		}
+        Gnome::Conf::SListHandle_ValueString::iterator a = aet_list.begin();
+        Gnome::Conf::SListHandle_ValueInt::iterator p = port_list.begin();
+        Gnome::Conf::SListHandle_ValueString::iterator h = hostname_list.begin();
+        Gnome::Conf::SListHandle_ValueString::iterator d = description_list.begin();
+        Gnome::Conf::SListHandle_ValueString::iterator g = group_list.begin();
+        Gnome::Conf::SListHandle_ValueBool::iterator l = lossy_list.begin();
+        Gnome::Conf::SListHandle_ValueBool::iterator r = relational_list.begin();
 
-		ServerData& s = (*list)[servername];
-		s.m_aet = *a;
-		s.m_port = *p;
-		s.m_hostname = *h;
-		s.m_name = servername;
-		s.m_lossy = false;
-		s.m_relational = false;
-	
-		if(l != lossy_list.end()) {
-			s.m_lossy = *l;
-			l++;
-		}
+        for(; h != hostname_list.end() && a != aet_list.end() && p != port_list.end(); a++, p++, h++) {
 
-		if(g != group_list.end()) {
-			s.m_group = *g;
-			g++;
-		}
+                std::string servername;
+                if(d != description_list.end()) {
+                        servername = *d;
+                        d++;
+                }
+                else {
+                        char buffer[50];
+                        snprintf(buffer, sizeof(buffer), "Server%li", list->size()+1);
+                        servername = buffer;
+                }
 
-		if(r != relational_list.end()) {
-			s.m_relational = *r;
-			r++;
-		}
+                ServerData& s = (*list)[servername];
+                s.m_aet = *a;
+                s.m_port = *p;
+                s.m_hostname = *h;
+                s.m_name = servername;
+                s.m_lossy = false;
+                s.m_relational = false;
 
-	}
-	
-	return list;
+                if(l != lossy_list.end()) {
+                        s.m_lossy = *l;
+                        l++;
+                }
+
+                if(g != group_list.end()) {
+                        s.m_group = *g;
+                        g++;
+                }
+
+                if(r != relational_list.end()) {
+                        s.m_relational = *r;
+                        r++;
+                }
+
+        }
+
+        return list;
 }
 
 void Configuration::set_serverlist(std::vector<ServerData>& list) {
-	std::vector< Glib::ustring > aet_list;
-	std::vector< Glib::ustring > hostname_list;
-	std::vector< int > port_list;
-	std::vector< Glib::ustring > description_list;
-	std::vector< Glib::ustring > group_list;
-	std::vector< gboolean > lossy_list;
-	std::vector< gboolean > relational_list;
+        std::vector< Glib::ustring > aet_list;
+        std::vector< Glib::ustring > hostname_list;
+        std::vector< int > port_list;
+        std::vector< Glib::ustring > description_list;
+        std::vector< Glib::ustring > group_list;
+        std::vector< gboolean > lossy_list;
+        std::vector< gboolean > relational_list;
 
-	std::vector<ServerData>::iterator i;
-	for(i = list.begin(); i != list.end(); i++) {
-		aet_list.push_back(i->m_aet);
-		hostname_list.push_back(i->m_hostname);
-		port_list.push_back(i->m_port);
-		description_list.push_back(i->m_name);
-		group_list.push_back(i->m_group);
-		lossy_list.push_back(i->m_lossy);
-		relational_list.push_back(i->m_relational);
-	}
+        std::vector<ServerData>::iterator i;
+        for(i = list.begin(); i != list.end(); i++) {
+                aet_list.push_back(i->m_aet);
+                hostname_list.push_back(i->m_hostname);
+                port_list.push_back(i->m_port);
+                description_list.push_back(i->m_name);
+                group_list.push_back(i->m_group);
+                lossy_list.push_back(i->m_lossy);
+                relational_list.push_back(i->m_relational);
+        }
 
-	m_conf_client->set_string_list("/apps/aeskulap/preferences/server_aet", aet_list);
-	m_conf_client->set_string_list("/apps/aeskulap/preferences/server_hostname", hostname_list);
-	m_conf_client->set_int_list("/apps/aeskulap/preferences/server_port", port_list);
-	m_conf_client->set_string_list("/apps/aeskulap/preferences/server_description", description_list);
-	m_conf_client->set_string_list("/apps/aeskulap/preferences/server_group", group_list);
-	m_conf_client->set_bool_list("/apps/aeskulap/preferences/server_lossy", lossy_list);
-	m_conf_client->set_bool_list("/apps/aeskulap/preferences/server_relational", relational_list);
+        m_conf_client->set_string_list("/apps/aeskulap/preferences/server_aet", aet_list);
+        m_conf_client->set_string_list("/apps/aeskulap/preferences/server_hostname", hostname_list);
+        m_conf_client->set_int_list("/apps/aeskulap/preferences/server_port", port_list);
+        m_conf_client->set_string_list("/apps/aeskulap/preferences/server_description", description_list);
+        m_conf_client->set_string_list("/apps/aeskulap/preferences/server_group", group_list);
+        m_conf_client->set_bool_list("/apps/aeskulap/preferences/server_lossy", lossy_list);
+        m_conf_client->set_bool_list("/apps/aeskulap/preferences/server_relational", relational_list);
 }
 
 bool Configuration::get_windowlevel(const Glib::ustring& modality, const Glib::ustring& desc, WindowLevel& w) {
-	Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+modality+"/"+desc;
+        Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+modality+"/"+desc;
 
-	if(!m_conf_client->dir_exists(base)) {
-		return false;
-	}
+        if(!m_conf_client->dir_exists(base)) {
+                return false;
+        }
 
-	if(m_conf_client->get_without_default(base+"/center").get_type() == Gnome::Conf::VALUE_INVALID) {
-		return false;
-	}
+        if(m_conf_client->get_without_default(base+"/center").get_type() == Gnome::Conf::VALUE_INVALID) {
+                return false;
+        }
 
-	w.modality = modality;
-	w.description = desc;
-	w.center = m_conf_client->get_int(base+"/center");
-	w.width = m_conf_client->get_int(base+"/width");
+        w.modality = modality;
+        w.description = desc;
+        w.center = m_conf_client->get_int(base+"/center");
+        w.width = m_conf_client->get_int(base+"/width");
 
-	return true;
+        return true;
 }
 
 bool Configuration::get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list) {
-	if(modality.empty()) {
-		return false;
-	}
+        if(modality.empty()) {
+                return false;
+        }
 
-	Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+modality;
+        Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+modality;
 
-	std::vector< Glib::ustring > dirs = m_conf_client->all_dirs(base);
-	if(dirs.size() == 0) {
-		return false;
-	}
+        std::vector< Glib::ustring > dirs = m_conf_client->all_dirs(base);
+        if(dirs.size() == 0) {
+                return false;
+        }
 
-	list.clear();
-	
-	for(unsigned int i=0; i<dirs.size(); i++) {
-		WindowLevel w;
-		if(get_windowlevel(modality, get_name_from_path(dirs[i]), w)) {
-			list[w.description] = w;
-		}
-	}
-	
-	return true;
+        list.clear();
+
+        for(unsigned int i=0; i<dirs.size(); i++) {
+                WindowLevel w;
+                if(get_windowlevel(modality, get_name_from_path(dirs[i]), w)) {
+                        list[w.description] = w;
+                }
+        }
+
+        return true;
 }
 
 bool Configuration::set_windowlevel(const WindowLevel& w) {
-	Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+w.modality+"/"+w.description;
+        Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+w.modality+"/"+w.description;
 
-	if(!m_conf_client->dir_exists(base)) {
-		m_conf_client->add_dir(base);
-	}
+        if(!m_conf_client->dir_exists(base)) {
+                m_conf_client->add_dir(base);
+        }
 
-	m_conf_client->set(base+"/center", w.center);
-	m_conf_client->set(base+"/width", w.width);
-	
-	return true;
+        m_conf_client->set(base+"/center", w.center);
+        m_conf_client->set(base+"/width", w.width);
+
+        return true;
 }
 
 bool Configuration::set_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list) {
-	Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+modality;
-	WindowLevelList::iterator i;
-	
-	for(i = list.begin(); i != list.end(); i++) {
-		i->second.modality = modality;
-		set_windowlevel(i->second);
-	}
-	
-	return true;
+        Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+modality;
+        WindowLevelList::iterator i;
+
+        for(i = list.begin(); i != list.end(); i++) {
+                i->second.modality = modality;
+                set_windowlevel(i->second);
+        }
+
+        return true;
 }
 
 bool Configuration::unset_windowlevels(const Glib::ustring& modality) {
-	Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+modality;
+        Glib::ustring base = "/apps/aeskulap/presets/windowlevel/"+modality;
 
-	std::vector< Glib::ustring > dirs = m_conf_client->all_dirs(base);
-	if(dirs.size() == 0) {
-		return false;
-	}
+        std::vector< Glib::ustring > dirs = m_conf_client->all_dirs(base);
+        if(dirs.size() == 0) {
+                return false;
+        }
 
-	for(unsigned int i=0; i<dirs.size(); i++) {
-		Glib::ustring keybase = base+"/"+get_name_from_path(dirs[i]);
-		m_conf_client->unset(keybase+"/center");
-		m_conf_client->unset(keybase+"/width");
-	}
-	
-	return true;
+        for(unsigned int i=0; i<dirs.size(); i++) {
+                Glib::ustring keybase = base+"/"+get_name_from_path(dirs[i]);
+                m_conf_client->unset(keybase+"/center");
+                m_conf_client->unset(keybase+"/width");
+        }
+
+        return true;
 }
 
 } // namespace Aeskulap

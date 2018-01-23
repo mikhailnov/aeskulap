@@ -105,6 +105,19 @@ int main(int argc, char* argv[]) {
 	for(int c=1; c<argc; c++) {
 		if(argv[c][0] != '-') {
 			list.push_back(argv[c]);
+		}else{
+		        if (!strcmp(argv[c], "--dicomdir") ||
+			      !strcmp(argv[c], "-d")) {
+			       if (c + 1 < argc) {
+				       mainWindow->open_dicomdir(argv[c+1]);
+				       ++c;
+			       }else{
+				       std::cerr << "option '" << argv[c]
+						 << "' requires a parameters" << std::endl;
+			       }
+			}else{
+			       std::cerr << "unknown option '" << argv[c] << "'given, ignoring"  << std::endl;  
+			}
 		}
 	}
 	
