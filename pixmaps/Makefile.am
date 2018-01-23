@@ -1,7 +1,7 @@
 icondir = $(datadir)/icons/hicolor/64x64/apps
-icon_DATA = aeskulap.png
+icon_DATA = $(srcdir)/aeskulap.png
 svgicondir = $(datadir)/icons/hicolor/scalable/apps
-svgicon_DATA = aeskulap.svg
+svgicon_DATA = $(srcdir)/aeskulap.svg
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 
@@ -16,31 +16,31 @@ install-data-hook:
 
 imagesdir = $(datadir)/aeskulap/images
 images_DATA = \
-	grid-16.png \
-	grid-1.png \
-	grid-2h.png \
-	grid-2v.png \
-	grid-4.png \
-	series-1x1.png \
-	series-2x1.png \
-	series-2x2.png \
-	series-3x2.png \
-	series-3x3.png \
-	series-4x4.png \
-	stock-layers-24.png \
-	stock-tool-measure-22.png \
-	stock-tool-scale-22.png \
-	stock-tool-eraser-22.png \
-	cursor_pan.png \
-	cursor_windowlevel.png \
-	cursor_zoom.png \
-	filmholes-big-left.png \
-	filmholes-big-right.png \
-	start-here.png \
-	stock-tool-color-picker-22.png
+	$(srcdir)/grid-16.png \
+	$(srcdir)/grid-1.png \
+	$(srcdir)/grid-2h.png \
+	$(srcdir)/grid-2v.png \
+	$(srcdir)/grid-4.png \
+	$(srcdir)/series-1x1.png \
+	$(srcdir)/series-2x1.png \
+	$(srcdir)/series-2x2.png \
+	$(srcdir)/series-3x2.png \
+	$(srcdir)/series-3x3.png \
+	$(srcdir)/series-4x4.png \
+	$(srcdir)/stock-layers-24.png \
+	$(srcdir)/stock-tool-measure-22.png \
+	$(srcdir)/stock-tool-scale-22.png \
+	$(srcdir)/stock-tool-eraser-22.png \
+	$(srcdir)/cursor_pan.png \
+	$(srcdir)/cursor_windowlevel.png \
+	$(srcdir)/cursor_zoom.png \
+	$(srcdir)/filmholes-big-left.png \
+	$(srcdir)/filmholes-big-right.png \
+	$(srcdir)/start-here.png \
+	$(srcdir)/stock-tool-color-picker-22.png
 
 EXTRA_DIST = \
-	README \
+	$(srcdir)/README \
 	$(icon_DATA) \
 	$(svgicon_DATA) \
 	$(images_DATA)
