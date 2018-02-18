@@ -43,7 +43,7 @@ protected:
 
 	Instance(const std::string& sopinstanceuid);
 
-	friend void ImagePool::remove_instance(const Glib::RefPtr<ImagePool::Instance>&);
+	friend void remove_instance(const Glib::RefPtr<ImagePool::Instance>&);
 
 	friend class ImagePool::Loader;
 
