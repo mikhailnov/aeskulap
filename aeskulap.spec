@@ -1,15 +1,11 @@
-%global git 5c96ac7
+%global git ce82f85
 %global github jenslody-aeskulap
 %global checkout git%{git}
-%global checkout_date 20171210
-
-%if 0%{?fedora} < 23
-%global _hardened_build 1
-%endif
+%global checkout_date 20180219
 
 Name:           aeskulap
 Version:        0.2.2
-Release:        0.30.beta1%{?dist}
+Release:        0.35.beta2%{?dist}
 Summary:        Full open source replacement for commercially available DICOM viewers
 # The sources of the (internal) libraries are LGPLv2+, the rest of the sources are GPLv2+,
 # except binreloc.{c,h} and the documentation, which are in the public domain
@@ -18,6 +14,7 @@ URL:            https://github.com/jenslody/aeskulap
 
 Source0:        https://github.com/jenslody/%{name}/tarball/master/%{github}-%{git}.tar.gz
 
+BuildRequires:   gcc-c++
 BuildRequires:   dcmtk-devel
 BuildRequires:   intltool
 BuildRequires:   libpng-devel
@@ -80,27 +77,6 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.a
 
 %find_lang %{name}
 
-%pre
-%gconf_schema_prepare %{name}
-
-%post
-%gconf_schema_upgrade %{name}
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-/usr/bin/update-desktop-database &> /dev/null || :
-
-%preun
-%gconf_schema_remove %{name}
-
-%postun
-if [ $1 -eq 0 ] ; then
-    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-/usr/bin/update-desktop-database &> /dev/null || :
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-
 %files -f %{name}.lang
 %{_bindir}/%{name}
 %{_libdir}/%{name}/
@@ -109,7 +85,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/appdata/%{name}.appdata.xml
-%{_sysconfdir}/gconf/schemas/%{name}.schemas
+%{_datadir}/glib-2.0/schemas/org.gnu.aeskulap.gschema.xml
 %exclude %{_libdir}/%{name}/*.la
 %doc AUTHORS ABOUT-NLS ChangeLog README
 %license COPYING COPYING.LIB
@@ -119,7 +95,24 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %license COPYING.DOC
 
 %changelog
-* Sun Dec 10 2017 Jens Lody <fedora@jenslody.de> - 0.2.2-0.30.beta1
+* Mon Feb 19 2018 Jens Lody <fedora@jenslody.de> - 0.2.2-0.35.beta2
+- New beta release (switch to gsettings).
+- Add BuildRequires for c++.
+- Fix build on Rawhide.
+
+* Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.2-0.34.beta1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Sun Jan 07 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.2.2-0.33.beta1
+- Remove obsolete scriptlets
+
+* Tue Jan 02 2018 Igor Gnatenko <ignatenko@redhat.com> - 0.2.2-0.32.beta1
+- Rebuild for dcmtk
+
+* Tue Jan 02 2018 Jens Lody <fedora@jenslody.de> - 0.2.2-0.31.beta1
+- Rebuilt for dcmtk-update.
+
+* Tue Dec 12 2017 Jens Lody <fedora@jenslody.de> - 0.2.2-0.30.beta1
 - Build fixes for dcmtk >= 3.6.2.
 - Don't link with deprecated tcp-wrapper, fixes rhbz #1518750.
 
