@@ -1,7 +1,7 @@
-%global git e467dfd
+%global git 5c96ac7
 %global github jenslody-aeskulap
 %global checkout git%{git}
-%global checkout_date 20151201
+%global checkout_date 20171210
 
 %if 0%{?fedora} < 23
 %global _hardened_build 1
@@ -9,7 +9,7 @@
 
 Name:           aeskulap
 Version:        0.2.2
-Release:        0.25.beta1%{?dist}
+Release:        0.30.beta1%{?dist}
 Summary:        Full open source replacement for commercially available DICOM viewers
 # The sources of the (internal) libraries are LGPLv2+, the rest of the sources are GPLv2+,
 # except binreloc.{c,h} and the documentation, which are in the public domain
@@ -26,7 +26,6 @@ BuildRequires:   libtiff-devel
 BuildRequires:   libtool
 BuildRequires:   openssl-devel
 BuildRequires:   gettext-devel
-BuildRequires:   tcp_wrappers-devel
 BuildRequires:   desktop-file-utils
 BuildRequires:   pkgconfig(gtkmm-2.4)
 BuildRequires:   pkgconfig(libglademm-2.4)
@@ -120,6 +119,22 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %license COPYING.DOC
 
 %changelog
+* Sun Dec 10 2017 Jens Lody <fedora@jenslody.de> - 0.2.2-0.30.beta1
+- Build fixes for dcmtk >= 3.6.2.
+- Don't link with deprecated tcp-wrapper, fixes rhbz #1518750.
+
+* Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.2-0.29.beta1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.2-0.28.beta1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.2-0.27.beta1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.2-0.26.beta1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
 * Tue Dec 01 2015 Jens Lody <fedora@jenslody.de> - 0.2.2-0.25.beta1
 - Add license file, to doc-package.
 

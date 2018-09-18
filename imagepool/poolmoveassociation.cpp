@@ -197,7 +197,11 @@ OFCondition MoveAssociation::acceptSubAssoc(T_ASC_Network *aNet, T_ASC_Associati
 			// the array of Storage SOP Class UIDs comes from dcuid.h
 			cond = ASC_acceptContextsWithPreferredTransferSyntaxes(
 					(*assoc)->params,
+#if OFFIS_DCMTK_VERSION_NUMBER >= 362
 					dcmAllStorageSOPClassUIDs, numberOfDcmAllStorageSOPClassUIDs,
+#else
+					dcmAllStorageSOPClassUIDs, numberOfAllDcmStorageSOPClassUIDs,
+#endif
 					transferSyntaxes, DIM_OF(transferSyntaxes));
 		}
 	}

@@ -123,6 +123,7 @@
 			<Add directory="$(#gtk.lib)" />
 			<Add directory="$(#dcmtk.lib)" />
 		</Linker>
+		<Unit filename="dicom_legacy.h" />
 		<Unit filename="dicomdir.cpp" />
 		<Unit filename="dicomdirloader.cpp" />
 		<Unit filename="dicomdirloader.h" />

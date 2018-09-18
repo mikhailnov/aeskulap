@@ -1,0 +1,76 @@
+<schemalist>
+  <schema id="org.gnu.aeskulap" path="/org/gnu/aeskulap/settings/">
+    <key name="local-aet" type="s">
+      <default>'AESKULAP'</default>
+      <summary>Local DICOM AET</summary>
+      <description>Defines the Application Entity Title of Aeskulap for network communication.</description>
+    </key>
+    <key name="local-port" type="i">
+      <default>6000</default>
+      <summary>Local DICOM port</summary>
+      <description>Defines the TCP/IP port for network communication.</description>
+    </key>
+    <key name="characterset" type="s">
+      <default>'ISO_IR 100'</default>
+      <summary>Specific CharacterSet</summary>
+      <description>Defines the DICOM character set to use</description>
+    </key>
+    <key name="server-aet" type="as">
+      <default>[ 'ARCHIV' ]</default>
+      <summary>List of remote server AET's</summary>
+      <description>This is a list of all available remote DICOM server AET's.</description>
+    </key>
+    <key name="server-port" type="as">
+      <default>[ '6100' ]</default>
+      <summary>List of remote server ports</summary>
+      <description>This is a list of all available remote DICOM server ports.</description>
+    </key>
+    <key name="server-hostname" type="as">
+      <default>[ 'shuttle' ]</default>
+      <summary>List of remote server hostnames</summary>
+      <description>This is a list of all available remote DICOM server hostnames.</description>
+    </key>
+    <key name="server-description" type="as">
+      <default>[ 'example server' ]</default>
+      <summary>Description of the server </summary>
+      <description>This is a list of the descriptions of the available remote DICOM servers.</description>
+    </key>
+    <key name="server-group" type="as">
+      <default>[ 'example group' ]</default>
+      <summary>Server group</summary>
+      <description>Group this servers belongs to.</description>
+    </key>
+    <key name="server-lossy" type="as">
+      <default>[ 'false' ]</default>
+      <summary>Prefer lossy jpeg</summary>
+      <description>Prefer lossy jpeg</description>
+    </key>
+    <key name="server-relational" type="as">
+      <default>[ 'false' ]</default>
+      <summary>Support relational requests.</summary>
+      <description>Support relational requests</description>
+    </key>
+  </schema>
+  <schema id="org.gnu.aeskulap.presets" path="/org/gnu/aeskulap/presets/">
+   <key name="modalities" type="as">
+     <default>[]</default>
+     <summary>Modality names stored.</summary>
+    </key>
+  </schema>
+  <schema id="org.gnu.aeskulap.presets.modality">
+    <key name="tissue-types" type="as">
+     <default>[]</default>
+     <summary>Tissue types stored.</summary>
+    </key>
+  </schema>
+  <schema id="org.gnu.aeskulap.presets.modality.tissue">
+    <key name="center" type="i">
+     <default>128</default>
+      <summary>Tissue center intensity.</summary>
+    </key>
+    <key name="width" type="i">
+      <default>128</default>
+      <summary>Tissue intensity width.</summary>
+    </key>
+  </schema>
+</schemalist>

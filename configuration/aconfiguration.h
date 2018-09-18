@@ -27,6 +27,10 @@
 #include <map>
 #include <vector>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include "awindowlevel.h"
 
 namespace Aeskulap {
@@ -34,64 +38,68 @@ namespace Aeskulap {
 class Configuration {
 public:
 
-	// data structures
+        // data structures
 
-	class ServerData {
-	public:
-		Glib::ustring m_name;
-		Glib::ustring m_hostname;
-		Glib::ustring m_aet;
-		unsigned int m_port;
-		Glib::ustring m_group;
-		bool m_lossy;
-		bool m_relational;
-	};
+        class ServerData {
+        public:
+                Glib::ustring m_name;
+                Glib::ustring m_hostname;
+                Glib::ustring m_aet;
+                unsigned int m_port;
+                Glib::ustring m_group;
+                bool m_lossy;
+                bool m_relational;
+        };
 
-	typedef std::map< Glib::ustring, ServerData > ServerList;
+        typedef std::map< Glib::ustring, ServerData > ServerList;
 
 
-	// backend independent methods
-	
-	static Configuration& get_instance();
+        // backend independent methods
 
-	void add_default_presets_ct();
+        static Configuration& get_instance();
 
-	// backend specific functions
+        void add_default_presets_ct();
 
-	ServerList* get_serverlist();
+        // backend specific functions
 
-	void set_serverlist(std::vector<ServerData>& list);
+        ServerList* get_serverlist();
 
-	std::string get_local_aet();
-	
-	void set_local_aet(const std::string& aet);
+        void set_serverlist(std::vector<ServerData>& list);
 
-	unsigned int get_local_port();
-	
-	void set_local_port(unsigned int port);
+        std::string get_local_aet();
 
-	std::string get_encoding();
-	
-	void set_encoding(const std::string& encoding);
+        void set_local_aet(const std::string& aet);
 
-	bool get_windowlevel(const Glib::ustring& modality, const Glib::ustring& desc, WindowLevel& w);
+        unsigned int get_local_port();
 
-	bool get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list);
+        void set_local_port(unsigned int port);
+
+        std::string get_encoding();
+
+        void set_encoding(const std::string& encoding);
+
+        bool get_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list);
 
 	bool set_windowlevel(const WindowLevel& w);
 
 	bool set_windowlevel_list(const Glib::ustring& modality, WindowLevelList& list);
 
-	bool unset_windowlevels(const Glib::ustring& modality);
+        bool unset_windowlevels(const Glib::ustring& modality);
 
 protected:
 
-	Configuration();
+        Configuration();
 
 private:
+        bool get_windowlevel(const Glib::ustring& modality, const Glib::ustring& desc, WindowLevel& w);
 
-	// internal helper (backend independend) functions
-	Glib::ustring get_name_from_path(const Glib::ustring& path);
+
+        // internal helper (backend independend) functions
+        Glib::ustring get_name_from_path(const Glib::ustring& path);
+
+#ifdef HAVE_GSETTINGS
+        struct ConfigurationImpl *impl;
+#endif
 
 };
 

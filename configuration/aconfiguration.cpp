@@ -22,62 +22,53 @@
 #include "aconfiguration.h"
 #include "gettext.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 namespace Aeskulap {
 
 Configuration& Configuration::get_instance() {
-	static Configuration c;
-	return c;
+        static Configuration c;
+        return c;
 }
 
 void Configuration::add_default_presets_ct() {
 
-	// DEFAULT CT WINDOWLEVELS
-	// 
-	// (Thanks Dr. Grover Ronald Pardo Holzwarth)
-	// 
-	// Abdomen     W:  250  C:  50
-	// Head        W:  150  C:  50
-	// Lung        W:  2000 C: -550
-	// Mediastinum W:  450  C:  50
-	// Spine       W:  300  C:  40
-	// Vertebrae   W:  2300 C:  530
+        // DEFAULT CT WINDOWLEVELS
+        //
+        // (Thanks Dr. Grover Ronald Pardo Holzwarth)
+        //
+        // Abdomen     W:  250  C:  50
+        // Head        W:  150  C:  50
+        // Lung        W:  2000 C: -550
+        // Mediastinum W:  450  C:  50
+        // Spine       W:  300  C:  40
+        // Vertebrae   W:  2300 C:  530
 
-	set_windowlevel(WindowLevel(gettext("Abdomen"), "CT", 50, 250));
-	set_windowlevel(WindowLevel(gettext("Head"), "CT", 50, 150));
-	set_windowlevel(WindowLevel(gettext("Lung"), "CT", -550, 2000));
-	set_windowlevel(WindowLevel(gettext("Mediastinum"), "CT", 50, 450));
-	set_windowlevel(WindowLevel(gettext("Spine"), "CT", 40, 300));
-	set_windowlevel(WindowLevel(gettext("Vertebrae"), "CT", 530, 2300));
+	WindowLevelList w;
+	set_windowlevel_list("CT", w);
+        set_windowlevel(WindowLevel(gettext("Abdomen"), "CT", 50, 250));
+        set_windowlevel(WindowLevel(gettext("Head"), "CT", 50, 150));
+        set_windowlevel(WindowLevel(gettext("Lung"), "CT", -550, 2000));
+        set_windowlevel(WindowLevel(gettext("Mediastinum"), "CT", 50, 450));
+        set_windowlevel(WindowLevel(gettext("Spine"), "CT", 40, 300));
+        set_windowlevel(WindowLevel(gettext("Vertebrae"), "CT", 530, 2300));
 }
 
 Glib::ustring Configuration::get_name_from_path(const Glib::ustring& path) {
-	Glib::ustring name;
+        Glib::ustring name;
 
-	Glib::ustring::size_type p = path.rfind("/");
-	if(p == Glib::ustring::npos) {
-		name = path;
-	}
-	else {
-		name = path.substr(p+1);
-	}
-	
-	return name;
+        Glib::ustring::size_type p = path.rfind("/");
+        if(p == Glib::ustring::npos) {
+                name = path;
+        }
+        else {
+                name = path.substr(p+1);
+        }
+
+        return name;
 }
 
 } // namespace Aeskulap
-
-
-#ifdef WIN32
-
-// WIN32 configuration backend
-
-#include "aconfiguration-win32.cpp"
-
-#else
-
-// gconf configuration backend
-
-#include "aconfiguration-gconf.cpp"
-
-#endif
 

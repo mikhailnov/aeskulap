@@ -46,3 +46,4 @@ libtool-fixed
 libtool
 ltmain.sh
 rpmbuild
+*.kdev4

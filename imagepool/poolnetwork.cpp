@@ -225,7 +225,11 @@ OFCondition Network::addAllStoragePresentationContexts(T_ASC_Parameters *params,
 	}
 
 	/* the array of Storage SOP Class UIDs comes from dcuid.h */
+#if OFFIS_DCMTK_VERSION_NUMBER >= 362
 	for (i=0; i<numberOfDcmAllStorageSOPClassUIDs && cond.good(); i++) {
+#else
+	for (i=0; i<numberOfAllDcmStorageSOPClassUIDs && cond.good(); i++) {
+#endif
 		cond = ASC_addPresentationContext(params, pid, dcmAllStorageSOPClassUIDs[i], transferSyntaxes, transferSyntaxes_count);
 		pid += 2;	/* only odd presentation context id's */
 	}

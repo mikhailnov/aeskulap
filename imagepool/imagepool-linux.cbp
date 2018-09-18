@@ -45,6 +45,7 @@
 			<Add directory="../configuration" />
 		</Compiler>
 		<Unit filename="Makefile.am" />
+		<Unit filename="dicom_legacy.h" />
 		<Unit filename="dicomdir.cpp" />
 		<Unit filename="dicomdirloader.cpp" />
 		<Unit filename="dicomdirloader.h" />
