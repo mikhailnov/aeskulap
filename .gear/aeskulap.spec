@@ -12,7 +12,7 @@ Url: http://aeskulap.nongnu.org
 # Git https://github.com/jenslody/aeskulap
 Source: %name-%version.tar
 
-Requires: dcmtk, libdcmtk, GConf
+Requires: dcmtk, GConf
 BuildPreReq: gcc-c++, zlib-devel, libpng-devel, libtiff-devel
 BuildPreReq: libxml2-devel, libssl-devel
 BuildPreReq: libgtkmm2-devel, libglademm-devel, libgconfmm2-devel
