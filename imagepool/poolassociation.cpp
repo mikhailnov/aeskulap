@@ -120,7 +120,7 @@ OFCondition Association::SendObject(DcmDataset *dataset) {
 	T_DIMSE_C_StoreRSP rsp;
 
 	// check if we SOPClass and SOPInstance in dataset
-	if (!DU_findSOPClassAndInstanceInDataSet(dataset, sopClass, sopInstance))
+	if (!DU_findSOPClassAndInstanceInDataSet(dataset, sopClass, sizeof(sopClass), sopInstance, sizeof(sopInstance)))
 	{
 		return DIMSE_BADDATA;
 	}
