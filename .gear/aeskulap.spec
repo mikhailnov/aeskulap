@@ -2,7 +2,7 @@
 
 Name: aeskulap
 Version: 0.2.2
-Release: alt5.git8787e95
+Release: alt6.git8787e95
 
 Summary: Medial image viewer for DICOM images
 License: GPL/LGPL
@@ -57,6 +57,9 @@ desktop-file-install --dir %buildroot%_desktopdir \
 %doc ABOUT-NLS AUTHORS ChangeLog COPYING COPYING.LIB NEWS README
 
 %changelog
+* Sun Jan 20 2019 Anton Farygin <rider@altlinux.ru> 0.2.2-alt6.git8787e95
+- rebuilt for libdcmtk14
+
 * Mon Oct 15 2018 Anton Farygin <rider@altlinux.ru> 0.2.2-alt5.git8787e95
 - removed libwrap requires
 
